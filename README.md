@@ -220,7 +220,7 @@ Please read the [CONTRIBUTING GUIDELINES](CONTRIBUTING.md) if you're a contribut
 ├─ 📄 package.json
 ├─ 📄 postcss.config.mjs
 └─ 📄 tsconfig.json
-
+```
 
 
 ## 🌐 Original DSAMate Website
