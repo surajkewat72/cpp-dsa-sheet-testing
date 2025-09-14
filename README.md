@@ -105,6 +105,121 @@ Please read the [CONTRIBUTING GUIDELINES](CONTRIBUTING.md) if you're a contribut
 - **React Icons**
 ---
 
+## 📁 Project Folder Structure
+```
+📦 saumyayadav25
+├─ 📂 .github
+├─ 📂 app
+│  ├─ 📂 (auth)
+│  ├─ 📂 api
+│  ├─ 📂 code-analyzer
+│  ├─ 📂 companies
+│  ├─ 📂 contributors
+│  ├─ 📂 cp-tracker
+│  ├─ 📂 email-preference
+│  ├─ 📂 flashcards
+│  ├─ 📂 interview-experiences
+│  ├─ 📂 notes
+│  ├─ 📂 privacy-terms
+│  ├─ 📂 profile
+│  │  ├─ 📂 [userId]
+│  │  └─ 📂 settings
+│  │     └─ 📄 avatar
+│  ├─ 📂 progress
+│  ├─ 📂 question
+│  │  └─ 📂 [slug]
+│  ├─ 📂 sheet
+│  ├─ 📂 theory-cheatsheets
+│  ├─ 📂 timequiz
+│  ├─ 📄 globals.css
+│  ├─ 📄 layout.tsx
+│  └─ 📄 page.tsx
+├─ 📂 components
+│  ├─ 📂 charts
+│  │  ├─ 📄 CodeforcesCharts.tsx
+│  │  └─ 📄 LeetCodeDashboard.tsx
+│  ├─ 📂 magicui
+│  │  └─ 📄 TestimonialPrompt.tsx
+│  └─ 📂 ui
+│     ├─ 📄 AuthButtons.tsx
+│     ├─ 📄 BotWidget.tsx
+│     ├─ 📄 CompanyProgressSummary.tsx
+│     ├─ 📄 CompanyQuestionsList.tsx
+│     ├─ 📄 CompanySelector.tsx
+│     ├─ 📄 EmptyState.tsx
+│     ├─ 📄 Filters.tsx
+│     ├─ 📄 Flashcard.tsx
+│     ├─ 📄 FlashcardComponent.tsx
+│     ├─ 📄 Footer.tsx
+│     ├─ 📄 FooterWrapper.tsx
+│     ├─ 📄 MarqueeDemo.tsx
+│     ├─ 📄 Navbar.tsx
+│     ├─ 📄 NavbarSheet.tsx
+│     ├─ 📄 OAuthLogin.tsx
+│     ├─ 📄 POTD.tsx
+│     ├─ 📄 ProgressBar.tsx
+│     ├─ 📄 ProgressChart.tsx
+│     ├─ 📄 ProgressStats.tsx
+│     ├─ 📄 ProgressSummary.tsx
+│     ├─ 📄 ProgressTracker.tsx
+│     ├─ 📄 Providers.tsx
+│     ├─ 📄 RecentActivity.tsx
+│     ├─ 📄 ReportIssueButton.tsx
+│     ├─ 📄 ScrollToTopBottom.tsx
+│     ├─ 📄 SheetContent.tsx
+│     ├─ 📄 StreakCalendar.tsx
+│     ├─ 📄 TopicProgress.tsx
+│     ├─ 📄 mode-toggle.tsx
+│     ├─ 📄 theme-provider.tsx
+│     └─ 📄 verify-otp.tsx
+├─ 📂 constant
+├─ 📂 contexts
+├─ 📂 data
+├─ 📂 db
+├─ 📂 design
+│  └─ 📂 logo-submissions
+├─ 📂 lib
+├─ 📂 middleware
+├─ 📂 models
+├─ 📂 pages
+│  └─ 📂 api
+├─ 📂 public
+│  ├─ 📂 assets
+│  ├─ 📂 icons
+│  ├─ 📂 images
+│  │  ├─ 📄 bg.png
+│  │  ├─ 📄 default-avatar.png
+│  │  ├─ 📄 dsa-hero.png
+│  │  ├─ 📄 fav.jpg
+│  │  ├─ 📄 file.svg
+│  │  ├─ 📄 globe.svg
+│  │  ├─ 📄 next.svg
+│  │  ├─ 📄 quiz.png
+│  │  ├─ 📄 vercel.svg
+│  │  └─ 📄 window.svg
+│  ├─ 📂 sounds
+│  ├─ 📄 manifest.json
+│  ├─ 📄 sw.js
+│  └─ 📄 workbox-4754cb34.js
+├─ 📂 scripts
+├─ 📂 utils
+├─ 📄 .gitignore
+├─ 📄 CODE_OF_CONDUCT.md
+├─ 📄 CONTRIBUTING.md
+├─ 📄 LEARN.md
+├─ 📄 LICENSE
+├─ 📄 README.md
+├─ 📄 components.json
+├─ 📄 contributors-data.md
+├─ 📄 get-ip.js
+├─ 📄 issue-tracker.txt
+├─ 📄 middleware.ts
+├─ 📄 next.config.ts
+├─ 📄 package-lock 2.json
+├─ 📄 package-lock.json
+├─ 📄 package.json
+├─ 📄 postcss.config.mjs
+└─ 📄 tsconfig.json
 
 
 
