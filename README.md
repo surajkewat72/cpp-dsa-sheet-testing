@@ -105,7 +105,121 @@ Please read the [CONTRIBUTING GUIDELINES](CONTRIBUTING.md) if you're a contribut
 - **React Icons**
 ---
 
+## 📁 Project Folder Structure
+```
+📦 saumyayadav25
+├─ 📂 .github                # GitHub workflows, issue/PR templates, CI/CD configs
+├─ 📂 app                    # Next.js App Router pages & features
+│  ├─ 📂 (auth)              # Authentication-related routes
+│  ├─ 📂 api                 # API endpoints (server actions, handlers)
+│  ├─ 📂 code-analyzer       # Code analysis feature pages
+│  ├─ 📂 companies           # Company-wise interview prep & progress
+│  ├─ 📂 contributors        # Contributor-related pages
+│  ├─ 📂 cp-tracker          # Competitive Programming tracker pages
+│  ├─ 📂 email-preference    # Email subscription & preference settings
+│  ├─ 📂 flashcards          # Flashcards for study/revision
+│  ├─ 📂 interview-experiences # User shared interview experiences
+│  ├─ 📂 notes               # Notes-related pages
+│  ├─ 📂 privacy-terms       # Privacy policy & terms pages
+│  ├─ 📂 profile             # User profile system
+│  │  ├─ 📂 [userId]         # Dynamic user profile pages
+│  │  └─ 📂 settings         # Profile settings
+│  │     └─ 📄 avatar        # Avatar upload/change page
+│  ├─ 📂 progress            # User progress tracking pages
+│  ├─ 📂 question            # Question detail pages
+│  │  └─ 📂 [slug]           # Dynamic route for each question
+│  ├─ 📂 sheet               # Curated DSA sheets
+│  ├─ 📂 theory-cheatsheets  # Theory-based cheatsheets
+│  ├─ 📂 timequiz            # Timed quiz feature
+│  ├─ 📄 globals.css         # Global CSS styles
+│  ├─ 📄 layout.tsx          # Root app layout
+│  └─ 📄 page.tsx            # Homepage
+│
+├─ 📂 components             # Reusable UI components
+│  ├─ 📂 charts              # Chart visualizations (LeetCode, Codeforces stats)
+│  ├─ 📂 magicui             # Special UI widgets (e.g., TestimonialPrompt)
+│  └─ 📂 ui                  # Common UI components (Navbar, Footer, Flashcard, etc.)
+│
+├─ 📂 constant               # Project constants
+│  └─ 📄 dbName.ts           # Stores DB name (`DSAMate`)
+│
+├─ 📂 contexts               # React Context providers (global state management)
+│
+├─ 📂 data                   # Static datasets
+│  ├─ 📄 companyQuestions.ts # Company-wise interview questions
+│  ├─ 📄 flashcards.ts       # Flashcard data
+│  ├─ 📄 questions.json      # DSA questions dataset (used in quizzes)
+│  └─ 📄 questions.ts        # TS-based question data
+│
+├─ 📂 db                     # Database connection setup
+│  └─ 📄 config.ts           # MongoDB connection logic with Mongoose
+│
+├─ 📂 design                 # Design assets
+│  └─ 📂 logo-submissions    # Logo design submissions
+│
+├─ 📂 lib                    # Helpers, services & API integrations
+│  ├─ 📂 cp                  # CP tracker related helpers
+│  ├─ 📄 awardBadges.ts      # Logic for awarding badges
+│  ├─ 📄 mail.ts             # Email sending (OAuth support)
+│  ├─ 📄 openaiAnalyze.ts    # Integration with OpenAI API
+│  ├─ 📄 sendOTP.ts          # OTP sending logic (auth)
+│  ├─ 📄 types.ts            # TypeScript type definitions
+│  ├─ 📄 useLocalStorage.ts  # Custom React hook for localStorage
+│  └─ 📄 utils.ts            # General helper functions
+│
+├─ 📂 middleware             # Request middleware utilities
+│  └─ 📄 rateLimiter.ts      # Rate limiting using IP (protects API routes)
+│
+├─ 📂 models                 # Mongoose models (MongoDB collections)
+│  ├─ 📄 Badge.model.ts      # User badges
+│  ├─ 📄 CpStats.ts          # CP stats tracking
+│  ├─ 📄 InterviewExperience.model.ts # Interview experiences
+│  ├─ 📄 JobRun.model.ts     # Scheduled jobs (cron/mail runs)
+│  ├─ 📄 Progress.model.ts   # User progress tracking
+│  ├─ 📄 Testimonials.ts     # User testimonials
+│  ├─ 📄 User.model.ts       # User schema (profile, settings, etc.)
+│  └─ 📄 quizSchema.ts       # Quiz schema (questions, attempts, scores)
+│
+├─ 📂 pages                  # Legacy Next.js `pages` dir (mostly API routes)
+│  └─ 📂 api                 # API routes (old-style)
+│
+├─ 📂 public                 # Static assets
+│  ├─ 📂 assets              # Other assets
+│  ├─ 📂 icons               # Icons
+│  ├─ 📂 images              # Images (avatars, hero, quiz, etc.)
+│  ├─ 📂 sounds              # Sound files
+│  ├─ 📄 manifest.json       # PWA manifest
+│  ├─ 📄 sw.js               # Service Worker
+│  └─ 📄 workbox-*.js        # Workbox caching script
+│
+├─ 📂 scripts                # Migration & maintenance scripts
+│  └─ 📄 migrateBadges.ts    # Converts old badge data into new schema
+│
+├─ 📂 utils                  # External API fetchers & helpers
+│  ├─ 📄 codeforces.ts       # Codeforces data fetcher
+│  ├─ 📄 getPOTD.ts          # Fetch Problem of the Day
+│  ├─ 📄 githubContributions.ts # GitHub contributions fetcher
+│  └─ 📄 leetcode.ts         # LeetCode data fetcher
+│
+├─ 📄 .gitignore             # Git ignore rules
+├─ 📄 CODE_OF_CONDUCT.md     # Contributor code of conduct
+├─ 📄 CONTRIBUTING.md        # Guidelines for contributors
+├─ 📄 LEARN.md               # Learning guide/docs
+├─ 📄 LICENSE                # Project license
+├─ 📄 README.md              # Project documentation
+├─ 📄 components.json        # shadcn/ui config
+├─ 📄 contributors-data.md   # Contributor details
+├─ 📄 get-ip.js              # Utility to fetch client IP
+├─ 📄 issue-tracker.txt      # Internal issue tracker notes
+├─ 📄 middleware.ts          # Root Next.js middleware
+├─ 📄 next.config.ts         # Next.js configuration
+├─ 📄 package-lock.json      # Dependency lockfile
+├─ 📄 package-lock 2.json    # Duplicate lockfile (cleanup candidate)
+├─ 📄 package.json           # Dependencies & scripts
+├─ 📄 postcss.config.mjs     # PostCSS (Tailwind) config
+└─ 📄 tsconfig.json          # TypeScript config
 
+```
 
 
 ## 🌐 Original DSAMate Website
