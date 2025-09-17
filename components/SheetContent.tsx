@@ -10,10 +10,35 @@ import {
   SiSpoj,
   SiCodingninjas,
 } from "react-icons/si";
-import { sampleTopics, type Question } from "@/data/questions";
 import { Plus, StickyNote, X } from "lucide-react";
 import axios from "axios";
 import ProgressTracker from "./ProgressTracker";
+
+// Types from the API
+interface Question {
+  id: number;
+  title: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  isSolved: boolean;
+  isMarkedForRevision: boolean;
+  links: {
+    leetcode?: string;
+    gfg?: string;
+    hackerrank?: string;
+    spoj?: string;
+    ninja?: string;
+    code?: string;
+    custom?: string;
+  };
+  solutionLink?: string;
+  companies?: string[];
+}
+
+interface Topic {
+  id: number;
+  name: string;
+  questions: Question[];
+}
 
 interface User {
   _id: string;
@@ -40,6 +65,9 @@ export default function SheetContent({
   companyFilter,
 }: SheetContentProps) {
   const [openTopics, setOpenTopics] = useState<number[]>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState<{
     [id: string]: {
       isSolved?: boolean;
@@ -60,6 +88,41 @@ export default function SheetContent({
     } catch (e) { }
     return new Set<number>();
   });
+
+  // Fetch topics from API
+  useEffect(() => {
+    console.log("SheetContent mount - fetchTopics start")
+    const fetchTopics = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch('/api/questions');
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Fetch /api/questions response:', data);
+
+        if (data && typeof data === 'object' && data.success) {
+          // Defensive: ensure data.data is an array
+          const incoming = Array.isArray(data.data) ? data.data : [];
+          setTopics(incoming);
+        } else {
+          throw new Error(data?.error || 'Failed to fetch questions');
+        }
+      } catch (err: any) {
+        console.error('Error fetching topics:', err);
+        setError(err.message || 'Failed to load questions');
+        setTopics([]); // Set empty array as fallback
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTopics();
+  }, []);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -110,6 +173,19 @@ export default function SheetContent({
       console.error("Failed to parse dsa-progress from localStorage", e);
     }
   }, []);
+
+  // Debug: log key state changes to help trace persistent loading issues
+  useEffect(() => {
+    console.log('SheetContent state:', { loading, topicsLength: topics.length, error });
+  }, [loading, topics.length, error]);
+
+  // Defensive: ensure loading is false when topics have been populated
+  useEffect(() => {
+    if (loading && topics.length > 0) {
+      console.log('Defensive: topics arrived while loading=true — forcing loading=false');
+      setLoading(false);
+    }
+  }, [loading, topics.length]);
   useEffect(() => {
     try {
       localStorage.setItem("dsa-progress", JSON.stringify(progress));
@@ -188,7 +264,7 @@ export default function SheetContent({
     if (!topicName) {
       const [topicIdStr] = id.split("-");
       const topicId = parseInt(topicIdStr);
-      const topic = sampleTopics.find((t) => t.id === topicId);
+      const topic = topics.find((t: Topic) => t.id === topicId);
       topicName = topic?.name || undefined;
     }
 
@@ -219,9 +295,9 @@ export default function SheetContent({
   useEffect(() => {
     const currentlyCompleted = new Set<number>();
 
-    sampleTopics.forEach((topic) => {
+    topics.forEach((topic: Topic) => {
       const totalQ = topic.questions.length;
-      const solvedQ = topic.questions.filter((q) => {
+      const solvedQ = topic.questions.filter((q: Question) => {
         const key = `${topic.id}-${q.id}`;
         return (progress[key]?.isSolved ?? q.isSolved) === true;
       }).length;
@@ -237,7 +313,7 @@ export default function SheetContent({
 
     (async () => {
       for (const topicId of newCompletions) {
-        const topic = sampleTopics.find((t) => t.id === topicId);
+        const topic = topics.find((t: Topic) => t.id === topicId);
         if (!topic) continue;
 
         try {
@@ -275,12 +351,12 @@ export default function SheetContent({
         }
       }
     })();
-  }, [progress, isLoggedIn, user]);
+  }, [progress, isLoggedIn, user, topics]);
 
-  const totalFiltered = sampleTopics.reduce((sum, topic) => {
+  const totalFiltered = topics.reduce((sum: number, topic: Topic) => {
     return (
       sum +
-      topic.questions.filter((q) => {
+      topic.questions.filter((q: Question) => {
         const key = `${topic.id}-${q.id}`;
         const local = progress[key] || {};
         const isSolved = local.isSolved ?? q.isSolved;
@@ -302,6 +378,28 @@ export default function SheetContent({
     );
   }, 0);
 
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="p-8 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-gray-600 dark:text-gray-400">Loading questions...</p>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="p-8">
+        <EmptyState
+          message="Failed to load questions"
+          suggestion={`Error: ${error}. Please try refreshing the page.`}
+        />
+      </div>
+    );
+  }
+
   if (totalFiltered === 0) {
     return (
       <div className="p-8">
@@ -315,6 +413,15 @@ export default function SheetContent({
 
   return (
     <>
+      {/* Dev debug panel - only visible in non-production builds */}
+      {process.env.NODE_ENV !== 'production' && (
+        <div className="fixed bottom-4 right-4 z-50 text-xs bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded px-3 py-2 shadow-lg">
+          <div className="font-semibold">Sheet Debug</div>
+          <div>loading: {String(loading)}</div>
+          <div>topics: {topics.length}</div>
+          <div style={{ maxWidth: 240, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>error: {error || '-'}</div>
+        </div>
+      )}
       {/* Authentication Notice */}
       {(!isLoggedIn || !user) && (
         <div className="mb-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
@@ -332,8 +439,8 @@ export default function SheetContent({
         </div>
       )}
 
-      {sampleTopics.map((topic) => {
-        const filtered = topic.questions.filter((q) => {
+      {topics.map((topic: Topic) => {
+        const filtered = topic.questions.filter((q: Question) => {
           const key = `${topic.id}-${q.id}`;
           const local = progress[key] || {};
           const isSolved = local.isSolved ?? q.isSolved;
@@ -356,7 +463,7 @@ export default function SheetContent({
         if (filtered.length === 0) return null;
 
         const totalQ = topic.questions.length;
-        const solvedQ = topic.questions.filter((q) => {
+        const solvedQ = topic.questions.filter((q: Question) => {
           const key = `${topic.id}-${q.id}`;
           return (progress[key]?.isSolved ?? q.isSolved) === true;
         }).length;
@@ -409,7 +516,7 @@ export default function SheetContent({
                     </tr>
                   </thead>
                   <tbody>
-                    {filtered.map((q) => {
+                    {filtered.map((q: Question) => {
                       const key = `${topic.id}-${q.id}`;
                       const local = progress[key] || {};
                       const isSolved = local.isSolved ?? q.isSolved;
@@ -453,7 +560,7 @@ export default function SheetContent({
                               </a>
                             )}
                           </td>
-                          <td className={`py-2 px-3 text-center font-semibold ${difficultyClasses[q.difficulty]}`}>
+                          <td className={`py-2 px-3 text-center font-semibold ${difficultyClasses[q.difficulty as keyof typeof difficultyClasses]}`}>
                             {q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1)}
                           </td>
                           <td className="py-2 px-3 text-center">
