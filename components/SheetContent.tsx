@@ -98,11 +98,23 @@ export default function SheetContent({
         setError(null);
         const response = await fetch('/api/questions');
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        // Try to parse JSON response body when available (even on non-2xx)
+        let data: any = null;
+        try {
+          const contentType = response.headers.get('content-type') || '';
+          if (contentType.includes('application/json')) {
+            data = await response.json();
+          }
+        } catch (parseErr) {
+          console.warn('Failed to parse JSON from /api/questions response', parseErr);
         }
 
-        const data = await response.json();
+        // If server returned non-OK, prefer server-provided message if any
+        if (!response.ok) {
+          const serverMsg = data?.message || data?.error || `HTTP error! status: ${response.status}`;
+          throw new Error(serverMsg);
+        }
+
         console.log('Fetch /api/questions response:', data);
 
         if (data && typeof data === 'object' && data.success) {
@@ -110,7 +122,7 @@ export default function SheetContent({
           const incoming = Array.isArray(data.data) ? data.data : [];
           setTopics(incoming);
         } else {
-          throw new Error(data?.error || 'Failed to fetch questions');
+          throw new Error(data?.error || data?.message || 'Failed to fetch questions');
         }
       } catch (err: any) {
         console.error('Error fetching topics:', err);

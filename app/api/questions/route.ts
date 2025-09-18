@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../../../db/config";
 import { Topic } from "../../../models/Question.model";
+import mongoose from 'mongoose';
 
 export async function GET(request: NextRequest) {
     try {
         // Connect to MongoDB
         await connect();
         console.log("Connected to MongoDB successfully");
+        console.log('Mongoose connection readyState:', mongoose.connection.readyState);
 
         // Get query parameters
         const { searchParams } = new URL(request.url);
@@ -87,6 +89,7 @@ export async function GET(request: NextRequest) {
 
     } catch (error: any) {
         console.error("Error fetching questions:", error);
+        if (error && error.stack) console.error(error.stack);
         return NextResponse.json(
             {
                 success: false,
