@@ -26,6 +26,7 @@ export default function SheetPage() {
   const [potd, setPotd] = useState<Question | null>(null);
 
   useEffect(() => {
+
     const potd = getPOTD();
     setPotd(potd);
 
