@@ -160,7 +160,7 @@ export default function NavbarSheet({
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-500">
                   Mate
                 </span>{" "}
-                Template
+                v2
               </span>
             </Link>
           </motion.div>

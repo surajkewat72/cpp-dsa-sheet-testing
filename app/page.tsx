@@ -143,7 +143,7 @@ const faqData = [
   },
   {
     question: "Is login required?",
-    answer: "Nope! There's no need to sign up or log in. Your progress is automatically saved in your browser's local storage. However, keep in mind that if you clear your browser cache or use incognito mode, this data might get deleted — so your progress will reset. Just use the same browser and device for the best experience.",
+    answer: "Yes , login is required.",
   },
   {
     question: "My question is not listed here, how can I get help?",
@@ -578,7 +578,7 @@ export default function Home() {
             className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-foreground drop-shadow-lg mt-6"
           >
           
-            DSA<span className="text-blue-400">Mate</span> template
+            DSA<span className="text-blue-400">Mate</span> v2
           </motion.h1>
 
           <motion.h2
@@ -631,14 +631,7 @@ export default function Home() {
               >
                 📊 Track Your Progress
               </Link>
-              <Link
-                href="https://dsamate.vercel.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-blue-700/70 dark:bg-blue-500 backdrop-blur-sm hover:bg-blue-500 text-blue-50 dark:hover:bg-blue-900/70 border border-white/30 hover:border-white/50 font-semibold py-3 px-6 sm:px-8 hover:scale-105 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl transform hover:schover:bg-blue-50 dark:hover:bg-blue-900/20ale-105 w-full sm:w-auto text-sm sm:text-base"
-              >
-                🔗 Visit Original DSAMate
-              </Link>
+             
               <Link
                 href="/cp-tracker"
                 className="bg-gradient-to-r from-indigo-600 to-purple-700 hover:from-indigo-700 hover:to-purple-800 text-white font-semibold py-3 px-6 sm:px-8 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base"
@@ -950,16 +943,7 @@ export default function Home() {
               >
                 💬 Give a Testimonial
               </motion.button>
-              <motion.a
-                href="https://dsamate.vercel.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white/70 dark:bg-white/5 backdrop-blur-sm border border-blue-500/50 dark:border-blue-400/50 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 font-semibold px-6 py-3 rounded-2xl transition-all duration-300"
-              >
-                🔗 Visit Original DSAMate
-              </motion.a>
+             
             </div>
           </motion.div>
           <div className="flex flex-row items-center justify-center mb-10">

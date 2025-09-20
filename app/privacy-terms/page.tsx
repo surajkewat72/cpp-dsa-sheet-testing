@@ -194,7 +194,7 @@ function PrivacyTermsContent() {
                   <section>
                     <h3 className="text-xl font-semibold mb-3 text-blue-600 dark:text-blue-400">1. Acceptance of Terms</h3>
                     <p>
-                      By accessing and using DSAMate Template, you accept and agree to be bound by the terms and provision of this agreement. 
+                      By accessing and using DSAMate v2, you accept and agree to be bound by the terms and provision of this agreement. 
                       This is a template project created for educational purposes under GirlScript Summer of Code (GSSoC) 2025.
                     </p>
                   </section>
@@ -202,8 +202,8 @@ function PrivacyTermsContent() {
                   <section>
                     <h3 className="text-xl font-semibold mb-3 text-blue-600 dark:text-blue-400">2. Description of Service</h3>
                     <ul className="list-disc pl-6 space-y-2">
-                      <li>DSAMate Template is an open-source educational platform for learning DSA concepts</li>
-                      <li>This is a template version with placeholder content for contribution purposes</li>
+                      <li>DSAMate v2 is an open-source educational platform for learning DSA concepts</li>
+                      <li>This is a v2 version with placeholder content for contribution purposes</li>
                       <li>The service is provided "as is" without warranties of any kind</li>
                       <li>Features include practice tracking, progress analytics, and contribution management</li>
                     </ul>
@@ -244,7 +244,7 @@ function PrivacyTermsContent() {
                   <section>
                     <h3 className="text-xl font-semibold mb-3 text-blue-600 dark:text-blue-400">6. Limitation of Liability</h3>
                     <p className="mb-3">
-                      DSAMate Template and its contributors shall not be liable for:
+                      DSAMate v2 and its contributors shall not be liable for:
                     </p>
                     <ul className="list-disc pl-6 space-y-2">
                       <li>Any direct, indirect, or consequential damages</li>
@@ -268,7 +268,7 @@ function PrivacyTermsContent() {
                       For questions about these Terms of Service, please contact us through:
                     </p>
                     <ul className="list-disc pl-6 space-y-2 mt-2">
-                      <li>GitHub Repository: <Link href="https://github.com/saumyayadav25/cpp-dsa-sheet-testing" className="text-purple-600 dark:text-purple-400 hover:underline">DSAMate Template</Link></li>
+                      <li>GitHub Repository: <Link href="https://github.com/saumyayadav25/cpp-dsa-sheet-testing" className="text-purple-600 dark:text-purple-400 hover:underline">DSAMate v2</Link></li>
                       <li>Issues: <Link href="https://github.com/saumyayadav25/cpp-dsa-sheet-testing/issues" className="text-purple-600 dark:text-purple-400 hover:underline">Report issues or ask questions</Link></li>
                       <li>Discussions: GitHub Discussions for community support</li>
                     </ul>
