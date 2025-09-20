@@ -226,14 +226,7 @@ export default function SheetPage() {
             🎲 Pick Random Question
           </button>
 
-          <a
-            href="https://dsamate.vercel.app/sheet"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-gray-800 dark:bg-gray-300 text-white dark:text-gray-900 rounded px-4 py-2 hover:bg-gray-700 dark:hover:bg-gray-400 transition-colors duration-300"
-          >
-            🔗 View Full List
-          </a>
+        
         </div>
 
         {/* POTD Section */}

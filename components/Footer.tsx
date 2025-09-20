@@ -68,7 +68,7 @@ export default function Footer() {
           >
             <h3 className="text-foreground text-lg font-bold mb-4 flex items-center gap-2">
               <span className="bg-gradient-to-r from-blue-500 to-cyan-500 w-3 h-3 rounded-full"></span>
-              About DSAMate
+              About DSAMate v2
             </h3>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
               Your ultimate destination for mastering Data Structures and

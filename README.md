@@ -1,4 +1,4 @@
-# DSAMate Template – GSSoC '25
+# DSAMate v2 – GSSoC '25
 
 <div align="center">
   <p>
@@ -30,7 +30,7 @@ This version is open for contributions as a part of **GirlScript Summer of Code 
 
 ## 🔍 About the Project
 
-DSAMate Template helps contributors explore the frontend logic, filters, UI components, and page structure of a full-featured DSA practice site.
+DSAMate v2 helps contributors explore the frontend logic, filters, UI components, and page structure of a full-featured DSA practice site.
 
 
 ### 🌟 Features
@@ -52,7 +52,7 @@ DSAMate Template helps contributors explore the frontend logic, filters, UI comp
 
 ## 📊 Progress Tracking Features
 
-The template now includes a comprehensive progress tracking system to help users monitor their DSA learning journey:
+The DSAMate v2 now includes a comprehensive progress tracking system to help users monitor their DSA learning journey:
 
 ### 🎯 Key Components
 
