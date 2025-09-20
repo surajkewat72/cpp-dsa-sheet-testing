@@ -540,7 +540,7 @@ export default function RichTextEditor({
         {/* Separator */}
         <div className="w-px h-8 bg-gradient-to-b from-blue-300 to-indigo-300 dark:from-blue-600 dark:to-indigo-600 mx-2 rounded-full" />
 
-        {formatButtons.map(({ icon: Icon, command, value, title, special }) => (
+        {formatButtons.map(({ icon: Icon, command, title, special }) => (
           <button
             key={command}
             type="button"
@@ -548,7 +548,7 @@ export default function RichTextEditor({
               if (special && command === 'link') {
                 setIsLinkModalOpen(true);
               } else {
-                executeCommand(command, value);
+                executeCommand(command);
               }
             }}
             className="p-2.5 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
