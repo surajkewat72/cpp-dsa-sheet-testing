@@ -681,7 +681,7 @@ export default function Home() {
             {[
               {
                 title: "Total Users",
-                value: "2100+",
+                value: "3100+",
                 icon: "👥",
                 gradient: "from-blue-500 to-cyan-500",
               },
