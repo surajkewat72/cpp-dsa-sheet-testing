@@ -47,21 +47,13 @@ const supremeNotesList: NoteTopic[] = [
 ];
 
 const patternWiseNotesList: NoteTopic[] = [
-  { title: "Sliding Window & 2 Pointers", link: "#", status: "coming-soon", icon: <BsGrid3X3GapFill /> },
-  { title: "Fast & Slow Pointers", link: "#", status: "coming-soon", icon: <GiPathDistance /> },
-  { title: "Merge Intervals", link: "#", status: "coming-soon", icon: <FaRegListAlt /> },
-  { title: "Cyclic Sort", link: "#", status: "coming-soon", icon: <GiCycle /> },
-  { title: "In-place Reversal of LinkedList", link: "#", status: "coming-soon", icon: <FaLink /> },
-  { title: "Tree BFS & DFS", link: "#", status: "coming-soon", icon: <FaTree /> },
-  { title: "Two Heaps", link: "#", status: "coming-soon", icon: <MdOutlineLeaderboard /> },
-  { title: "K-way Merge", link: "#", status: "coming-soon", icon: <GiStack /> },
-  { title: "0/1 Knapsack (DP)", link: "#", status: "coming-soon", icon: <FaBrain /> },
-  { title: "Unbounded Knapsack (DP)", link: "#", status: "coming-soon", icon: <FaBrain /> },
-  { title: "Fibonacci Numbers (DP)", link: "#", status: "coming-soon", icon: <FaChartLine /> },
-  { title: "Palindromic Subsequence (DP)", link: "#", status: "coming-soon", icon: <FaSortAlphaDown /> },
-  { title: "Longest Common Substring (DP)", link: "#", status: "coming-soon", icon: <FaSortAlphaDown /> },
-  { title: "Topological Sort (Graph)", link: "#", status: "coming-soon", icon: <FaProjectDiagram /> },
-  { title: "Trie", link: "#", status: "coming-soon", icon: <FaSitemap /> },
+  { title: "Sample Pattern Notes", link: "https://topmate.io/saumyayadav/1741509", icon: <CgFileDocument/> },
+  { title: "Two Pointers & Sliding Window", link: "#", status: "coming-soon", icon: <BsGrid3X3GapFill /> },
+  { title: "Sorting/Greedy & Binary Search", link: "#", status: "coming-soon", icon: <GiPathDistance /> },
+  { title: "Linked List & Stack/Queue", link: "#", status: "coming-soon", icon: <FaRegListAlt /> },
+  { title: "Trees/BST & Graphs", link: "#", status: "coming-soon", icon: <FaTree /> },
+  { title: "Heaps & DP & Backtracking", link: "#", status: "coming-soon", icon: <FaBrain /> },
+  { title: "COMPLETE PATTERN NOTES", link: "#", status: "coming-soon", icon: <FiPackage /> },
 ];
 
 export default function NotesPage() {
