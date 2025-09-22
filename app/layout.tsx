@@ -27,14 +27,82 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DSAMate",
+  title: {
+    default: "DSAMate v2 - Your Ultimate DSA Practice Platform",
+    template: "%s | DSAMate v2"
+  },
   description:
-    "All DSA questions in one place — DSAMate | DSA Practice is your ultimate destination for all DSA(Data Structures and Algorithms) questions with solutions in CPP. Comprehensive DSA Sheet to prepare for coding interviews with 450+ essential coding questions distributed topic-wise. Track your progress, filter by difficulty, status or platform like leetcode, gfg, hackerrank etc, and practice POTD to stay consistent. Perfect for students preparing for coding interviews and placements. Cpp DSA questions, Java DSA questions, Python DSA questions, and more. Join the community of learners and ace your coding interviews with DSAMate | DSA Practice Sheet | Cpp DSA questions | Cpp dsa sheet",
+    "Master Data Structures & Algorithms with DSAMate v2. 450+ curated DSA problems with solutions, progress tracking, smart filters, and daily POTD. Perfect for coding interviews, placements, and competitive programming. Join 3000+ developers mastering DSA.",
+  keywords: [
+    "DSA practice",
+    "Data Structures and Algorithms",
+    "coding interview preparation",
+    "leetcode problems",
+    "competitive programming",
+    "DSA sheet",
+    "coding questions",
+    "algorithm practice",
+    "programming interview",
+    "CPP DSA",
+    "Java DSA",
+    "Python DSA",
+    "GeeksforGeeks",
+    "HackerRank",
+    "SPOJ",
+    "coding ninjas"
+  ],
+  authors: [{ name: "DSAMate Team" }],
+  creator: "DSAMate",
+  publisher: "DSAMate",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://dsamate-v2.vercel.app",
+    siteName: "DSAMate v2",
+    title: "DSAMate v2 - Your Ultimate DSA Practice Platform",
+    description: "Master Data Structures & Algorithms with 450+ curated problems, progress tracking, and smart filters. Join 3000+ developers mastering DSA for coding interviews.",
+    images: [
+      {
+        url: "/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "DSAMate v2 - DSA Practice Platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DSAMate v2 - Your Ultimate DSA Practice Platform",
+    description: "Master Data Structures & Algorithms with 450+ curated problems, progress tracking, and smart filters. Join 3000+ developers mastering DSA.",
+    images: ["/og-image.svg"],
+    creator: "@dsamate",
+  },
   icons: {
-    icon: "/icons/icon-192.png", // Update if your icon is in a different location
-    apple: "/icons/icon-192.png",
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
   },
   manifest: "/manifest.json",
+  metadataBase: new URL("https://dsamate-v2.vercel.app"),
+  alternates: {
+    canonical: "/",
+  },
+  category: "education",
 };
 
 export const viewport: Viewport = {
