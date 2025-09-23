@@ -368,24 +368,25 @@ export default function Footer() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="relative z-10 border-t border-border mt-12 pt-6 text-center"
         >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-3">
-            <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} DSA Practice. All Rights
-              Reserved.
-            </p>
-            <p className="text-xs text-muted-foreground flex items-center gap-2">
-              Made with <span className="text-red-500 animate-pulse">❤️</span>{" "}
-              by{" "}
-              <motion.a
-                href="https://github.com/saumyayadav25"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-                className="text-blue-500 hover:text-blue-600 font-medium transition-colors"
-              >
-                Saumya Yadav
-              </motion.a>
-            </p>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-3">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-sm text-muted-foreground">
+              <span>
+                &copy; {new Date().getFullYear()} DSA Practice. All Rights Reserved.
+              </span>
+              <span className="hidden md:inline-block mx-2">|</span>
+              <span className="flex items-center gap-2">
+                Made with <span className="text-red-500 animate-pulse">❤️</span> by{" "}
+                <motion.a
+                  href="https://github.com/saumyayadav25"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                  className="text-blue-500 hover:text-blue-600 font-medium transition-colors"
+                >
+                 Saumya Yadav
+                </motion.a>
+              </span>
+            </div>
           </div>
         </motion.div>
       </footer>
