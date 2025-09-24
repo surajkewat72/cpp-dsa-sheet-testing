@@ -74,7 +74,7 @@ export default function SheetPage() {
   return (
     <>
       <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <main className="min-h-screen bg-white dark:bg-background text-gray-900 dark:text-white px-4 md:px-12 sheet-navbar-offset pb-24 transition-colors duration-300">
+      <main className="min-h-screen bg-gradient-to-br from-background via-background to-blue-950/5 dark:to-blue-900/10 text-gray-900 dark:text-white px-4 md:px-8 sheet-navbar-offset pb-24 transition-colors duration-300">
         <ReportIssueButton />
 
         {/* Progress Summary */}
@@ -82,153 +82,195 @@ export default function SheetPage() {
 
         {/* HERO SECTION */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            DSA Practice Problems
-          </h1>
-          <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
-            <strong>Note:</strong> Questions marked with the (for practice) tag
-            do not include the exact solutions. The provided code solutions in
-            this section serve as hints or are solutions to similar problems
-            from platforms like{" "}
-            <span className="text-blue-600 dark:text-blue-400">LeetCode</span>,{" "}
-            <span className="text-green-600 dark:text-green-400">
-              GeeksforGeeks
-            </span>
-            , or{" "}
-            <span className="text-yellow-500 dark:text-yellow-400">
-              HackerRank
-            </span>{" "}
-            ...
-          </p>
-          <div className="mt-4 bg-gray-200 dark:bg-gray-800 border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-3 inline-block text-sm md:text-base transition-colors duration-300">
-            ⚠️ Company-wise filtering is currently in progress. You might see
-            incomplete or missing tags. Contribute company-specific questions
-            via{" "}
-            <a
-              href="https://forms.gle/8WccErg3TBFTMPkj9"
-              className="underline text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              this form
-            </a>
-            .
+          <div className="relative">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 dark:from-blue-400 dark:via-purple-400 dark:to-blue-300 bg-clip-text text-transparent">
+              DSA Practice Problems
+            </h1>
+            <div className="absolute -top-2 -left-2 w-4 h-4 bg-blue-500/20 rounded-full animate-pulse"></div>
+            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-purple-500/20 rounded-full animate-pulse delay-1000"></div>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+              <strong className="text-blue-600 dark:text-blue-400">Note:</strong> Questions marked with the (for practice) tag
+              do not include the exact solutions. The provided code solutions in
+              this section serve as hints or are solutions to similar problems
+              from platforms like{" "}
+              <span className="text-orange-500 dark:text-orange-400 font-semibold">LeetCode</span>,{" "}
+              <span className="text-green-600 dark:text-green-400 font-semibold">
+                GeeksforGeeks
+              </span>
+              , or{" "}
+              <span className="text-yellow-500 dark:text-yellow-400 font-semibold">
+                HackerRank
+              </span>{" "}
+              ...
+            </p>
+            
+            <div className="mt-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200/50 dark:border-amber-700/50 text-amber-800 dark:text-amber-200 rounded-xl px-6 py-4 inline-block text-sm md:text-base transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/10">
+              <div className="flex items-center space-x-3">
+                <div className="flex-shrink-0">
+                  <svg className="w-5 h-5 text-amber-600 dark:text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="font-semibold">Company-wise filtering is currently in progress.</span> You might see
+                  incomplete or missing tags. Contribute company-specific questions
+                  via{" "}
+                  <a
+                    href="https://forms.gle/8WccErg3TBFTMPkj9"
+                    className="underline font-semibold hover:text-amber-900 dark:hover:text-amber-100 transition-colors duration-200"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    this form
+                  </a>
+                  .
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <ul className="text-sm md:text-base text-gray-600 dark:text-gray-400 mb-6">
-          <li className="mt-2">⚡: asked in 20+ companies</li>
-          <li className="mt-1">⚡🔥: asked in 50+ companies</li>
-          <li className="mt-1">⚡🔥🏆: asked in 80+ companies</li>
-          <li>(Based on data from LeetCode and GeeksforGeeks company tags)</li>
-        </ul>
-
-        {/* FILTERS */}
-        <div className="mb-6 flex flex-wrap md:flex-row gap-4 md:items-center">
-          {/* Difficulty Filter */}
-          <select
-            value={difficultyFilter}
-            onChange={(e) => setDifficultyFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
-          >
-            <option value="">Difficulties</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-
-          {/* Solved Status Filter */}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
-          >
-            <option value="">Solved Status</option>
-            <option value="solved">Solved</option>
-            <option value="unsolved">Unsolved</option>
-          </select>
-
-          {/* Revision Filter */}
-          <select
-            value={revisionFilter}
-            onChange={(e) => setRevisionFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
-          >
-            <option value="">Revision Status</option>
-            <option value="marked">Marked for Revision</option>
-            <option value="unmarked">Not Marked</option>
-          </select>
-
-          {/* Platform Filter */}
-          <select
-            value={platformFilter}
-            onChange={(e) => setPlatformFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
-          >
-            <option value="">Platform</option>
-            <option value="leetcode">LeetCode</option>
-            <option value="gfg">GeeksforGeeks</option>
-            <option value="hackerrank">HackerRank</option>
-            <option value="spoj">SPOJ</option>
-            <option value="ninja">Coding Ninjas</option>
-            <option value="code">Others</option>
-          </select>
-
-          {/* Company Filter */}
-          <select
-            value={companyFilter}
-            onChange={(e) => setCompanyFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
-          >
-            <option value="">All Companies</option>
-            <option value="Adobe">Adobe</option>
-            <option value="Amazon">Amazon</option>
-            <option value="Apple">Apple</option>
-            <option value="Cisco">Cisco</option>
-            <option value="DE shaw">DE shaw</option>
-            <option value="Flipkart">Flipkart</option>
-            <option value="Google">Google</option>
-            <option value="Intuit">Intuit</option>
-            <option value="MakeMyTrip">MakeMyTrip</option>
-            <option value="Meta">Meta</option>
-            <option value="Microsoft">Microsoft</option>
-            <option value="Morgan Stanley">Morgan Stanley</option>
-            <option value="Nvidia">Nvidia</option>
-            <option value="Oracle">Oracle</option>
-            <option value="Paypal">PayPal</option>
-            <option value="Paytm">Paytm</option>
-            <option value="PhonePe">PhonePe</option>
-            <option value="Salesforce">Salesforce</option>
-            <option value="Samsung">Samsung</option>
-            <option value="Sprinklr">Sprinklr</option>
-            <option value="Swiggy">Swiggy</option>
-            <option value="Tesla">Tesla</option>
-            <option value="Walmart">Walmart</option>
-            <option value="Uber">Uber</option>
-            <option value="Visa">Visa</option>
-            <option value="WITCH">WITCH</option>
-            {/* Add more as needed */}
-          </select>
-
-          {/* Reset Button */}
-          <button
-            onClick={resetFilters}
-            className="bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded px-4 py-2 shadow-md hover:bg-red-500/20 transition-colors duration-300"
-          >
-            Reset Filters
-          </button>
-
-          {/* Pick Random Question */}
-          <button
-            onClick={pickRandomQuestion}
-            className="bg-blue-600 text-white rounded px-4 py-2 shadow-md hover:bg-blue-700 transition-colors duration-300"
-          >
-            🎲 Pick Random Question
-          </button>
-
-        
+        {/* LEGEND SECTION */}
+        <div className="mb-8 max-w-6xl mx-auto">
+          <div className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-md border border-blue-200/30 dark:border-blue-700/30 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+              Question Popularity Legend
+            </h3>
+            <ul className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm md:text-base">
+              <li className="flex items-center space-x-2 p-3 bg-blue-50/50 dark:bg-blue-900/20 rounded-lg border border-blue-200/30 dark:border-blue-700/30">
+                <span className="text-lg">⚡</span>
+                <span className="text-gray-700 dark:text-gray-300">Asked in 20+ companies</span>
+              </li>
+              <li className="flex items-center space-x-2 p-3 bg-orange-50/50 dark:bg-orange-900/20 rounded-lg border border-orange-200/30 dark:border-orange-700/30">
+                <span className="text-lg">⚡🔥</span>
+                <span className="text-gray-700 dark:text-gray-300">Asked in 50+ companies</span>
+              </li>
+              <li className="flex items-center space-x-2 p-3 bg-yellow-50/50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200/30 dark:border-yellow-700/30">
+                <span className="text-lg">⚡🔥🏆</span>
+                <span className="text-gray-700 dark:text-gray-300">Asked in 80+ companies</span>
+              </li>
+            </ul>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center">
+              Based on data from LeetCode and GeeksforGeeks company tags
+            </p>
+          </div>
         </div>
 
+        {/* FILTERS SECTION */}
+        <div className="mb-8 max-w-7xl mx-auto">
+          <div className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-md border border-blue-200/30 dark:border-blue-700/30 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+              Filter Questions
+            </h3>
+            <div className="flex flex-wrap gap-4 md:items-center">
+              {/* Difficulty Filter */}
+              <select
+                value={difficultyFilter}
+                onChange={(e) => setDifficultyFilter(e.target.value)}
+                className="bg-white/90 dark:bg-slate-700/90 backdrop-blur-md text-gray-900 dark:text-white rounded-xl px-4 py-2.5 border border-blue-200/50 dark:border-blue-600/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 dark:focus:border-blue-400 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+              >
+                <option value="">All Difficulties</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+
+              {/* Solved Status Filter */}
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="bg-white/90 dark:bg-slate-700/90 backdrop-blur-md text-gray-900 dark:text-white rounded-xl px-4 py-2.5 border border-blue-200/50 dark:border-blue-600/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 dark:focus:border-blue-400 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+              >
+                <option value="">All Status</option>
+                <option value="solved">Solved</option>
+                <option value="unsolved">Unsolved</option>
+              </select>
+
+              {/* Revision Filter */}
+              <select
+                value={revisionFilter}
+                onChange={(e) => setRevisionFilter(e.target.value)}
+                className="bg-white/90 dark:bg-slate-700/90 backdrop-blur-md text-gray-900 dark:text-white rounded-xl px-4 py-2.5 border border-blue-200/50 dark:border-blue-600/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 dark:focus:border-blue-400 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+              >
+                <option value="">All Revision Status</option>
+                <option value="marked">Marked for Revision</option>
+                <option value="unmarked">Not Marked</option>
+              </select>
+
+              {/* Platform Filter */}
+              <select
+                value={platformFilter}
+                onChange={(e) => setPlatformFilter(e.target.value)}
+                className="bg-white/90 dark:bg-slate-700/90 backdrop-blur-md text-gray-900 dark:text-white rounded-xl px-4 py-2.5 border border-blue-200/50 dark:border-blue-600/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 dark:focus:border-blue-400 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+              >
+                <option value="">All Platforms</option>
+                <option value="leetcode">LeetCode</option>
+                <option value="gfg">GeeksforGeeks</option>
+                <option value="hackerrank">HackerRank</option>
+                <option value="spoj">SPOJ</option>
+                <option value="ninja">Coding Ninjas</option>
+                <option value="code">Others</option>
+              </select>
+
+              {/* Company Filter */}
+              <select
+                value={companyFilter}
+                onChange={(e) => setCompanyFilter(e.target.value)}
+                className="bg-white/90 dark:bg-slate-700/90 backdrop-blur-md text-gray-900 dark:text-white rounded-xl px-4 py-2.5 border border-blue-200/50 dark:border-blue-600/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 dark:focus:border-blue-400 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+              >
+                <option value="">All Companies</option>
+                <option value="Adobe">Adobe</option>
+                <option value="Amazon">Amazon</option>
+                <option value="Apple">Apple</option>
+                <option value="Cisco">Cisco</option>
+                <option value="DE shaw">DE shaw</option>
+                <option value="Flipkart">Flipkart</option>
+                <option value="Google">Google</option>
+                <option value="Intuit">Intuit</option>
+                <option value="MakeMyTrip">MakeMyTrip</option>
+                <option value="Meta">Meta</option>
+                <option value="Microsoft">Microsoft</option>
+                <option value="Morgan Stanley">Morgan Stanley</option>
+                <option value="Nvidia">Nvidia</option>
+                <option value="Oracle">Oracle</option>
+                <option value="Paypal">PayPal</option>
+                <option value="Paytm">Paytm</option>
+                <option value="PhonePe">PhonePe</option>
+                <option value="Salesforce">Salesforce</option>
+                <option value="Samsung">Samsung</option>
+                <option value="Sprinklr">Sprinklr</option>
+                <option value="Swiggy">Swiggy</option>
+                <option value="Tesla">Tesla</option>
+                <option value="Walmart">Walmart</option>
+                <option value="Uber">Uber</option>
+                <option value="Visa">Visa</option>
+                <option value="WITCH">WITCH</option>
+                {/* Add more as needed */}
+              </select>
+
+              {/* Reset Button */}
+              <button
+                onClick={resetFilters}
+                className="bg-gradient-to-r from-red-500/10 to-red-600/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl px-6 py-2.5 shadow-lg hover:from-red-500/20 hover:to-red-600/20 hover:shadow-xl hover:shadow-red-500/20 transition-all duration-300 font-medium backdrop-blur-sm"
+              >
+                Reset Filters
+              </button>
+
+              {/* Pick Random Question */}
+              <button
+                onClick={pickRandomQuestion}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl px-6 py-2.5 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 font-medium flex items-center space-x-2 backdrop-blur-sm"
+              >
+                <span>🎲</span>
+                <span>Pick Random Question</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
         {/* POTD Section */}
         <POTD potd={potd} updateStreak={updateStreak} />
 
@@ -236,71 +278,87 @@ export default function SheetPage() {
         {randomPick && (
           <div
             id="random-question-card"
-            className="mt-6 mb-8 border border-blue-300 dark:border-blue-800 bg-blue-50/60 dark:bg-blue-900/20 rounded-lg p-4"
+            className="mt-6 mb-8 max-w-4xl mx-auto"
           >
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="text-xs uppercase tracking-wide text-blue-700 dark:text-blue-300 mb-1">
-                  Random Pick
+            <div className="bg-gradient-to-r from-blue-50/90 to-indigo-50/90 dark:from-blue-900/40 dark:to-indigo-900/40 backdrop-blur-md border border-blue-200/40 dark:border-blue-700/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-700">
+                      🎯 Random Pick
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    {randomPick.question.title}
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
+                    <span className="flex items-center space-x-1">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                      <span className="font-medium">Topic:</span>
+                      <span className="text-blue-600 dark:text-blue-400 font-semibold">{randomPick.topicName}</span>
+                    </span>
+                    <span className="flex items-center space-x-1">
+                      <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                      <span className="font-medium">Difficulty:</span>
+                      <span className={`font-semibold capitalize ${
+                        randomPick.question.difficulty === 'easy' ? 'text-green-600 dark:text-green-400' :
+                        randomPick.question.difficulty === 'medium' ? 'text-yellow-600 dark:text-yellow-400' :
+                        'text-red-600 dark:text-red-400'
+                      }`}>
+                        {randomPick.question.difficulty}
+                      </span>
+                    </span>
+                  </div>
                 </div>
-                <div className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {randomPick.question.title}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  Topic:{" "}
-                  <span className="font-medium">{randomPick.topicName}</span> ·
-                  Difficulty:{" "}
-                  <span className="font-medium capitalize">
-                    {randomPick.question.difficulty}
-                  </span>
-                </div>
-              </div>
-              <button
-                onClick={pickRandomQuestion}
-                className="shrink-0 bg-blue-600 text-white rounded px-3 py-2 text-sm hover:bg-blue-700"
-              >
-                Pick Another
-              </button>
-            </div>
-            {/* Links */}
-            <div className="mt-3 flex flex-wrap gap-2">
-              {Object.entries(randomPick.question.links || {}).map(
-                ([key, url]) =>
-                  url ? (
-                    <a
-                      key={key}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm px-3 py-1 rounded border border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-100/60 dark:hover:bg-blue-900/40"
-                    >
-                      {key}
-                    </a>
-                  ) : null
-              )}
-              {randomPick.question.solutionLink && (
-                <a
-                  href={randomPick.question.solutionLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm px-3 py-1 rounded border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100/60 dark:hover:bg-zinc-900"
+                <button
+                  onClick={pickRandomQuestion}
+                  className="shrink-0 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl px-4 py-2 text-sm font-medium shadow-lg hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300"
                 >
-                  solution
-                </a>
-              )}
+                  Pick Another
+                </button>
+              </div>
+              {/* Links */}
+              <div className="mt-4 flex flex-wrap gap-2">
+                {Object.entries(randomPick.question.links || {}).map(
+                  ([key, url]) =>
+                    url ? (
+                      <a
+                        key={key}
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-white/60 dark:bg-gray-700/60 border border-blue-200/50 dark:border-blue-600/50 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-all duration-200"
+                      >
+                        {key}
+                      </a>
+                    ) : null
+                )}
+                {randomPick.question.solutionLink && (
+                  <a
+                    href={randomPick.question.solutionLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-white/60 dark:bg-gray-700/60 border border-gray-200/50 dark:border-gray-600/50 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-all duration-200"
+                  >
+                    solution
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         )}
 
         {/* SHEET CONTENT */}
-        <SheetContent
-          difficultyFilter={difficultyFilter}
-          statusFilter={statusFilter}
-          revisionFilter={revisionFilter}
-          searchTerm={searchTerm}
-          platformFilter={platformFilter}
-          companyFilter={companyFilter}
-        />
+        <div>
+          <SheetContent
+            difficultyFilter={difficultyFilter}
+            statusFilter={statusFilter}
+            revisionFilter={revisionFilter}
+            searchTerm={searchTerm}
+            platformFilter={platformFilter}
+            companyFilter={companyFilter}
+          />
+        </div>
       </main>
 
       <TestimonialPrompt />
