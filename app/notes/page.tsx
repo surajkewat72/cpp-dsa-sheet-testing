@@ -196,10 +196,10 @@ export default function NotesPage() {
               />
               <button
                 onClick={() => setShowFavouritesOnly(!showFavouritesOnly)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`px-4 py-2 rounded-lg font-medium transition-all 0.5 ease-in-out hover:scale-110 ${
                   showFavouritesOnly
-                    ? "bg-pink-600 text-white"
-                    : "bg-gray-200 dark:bg-gray-700"
+                    ? "bg-pink-600 text-white hover:bg-pink-500 shadow-lg shadow-pink-500/25"
+                    : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
                 }`}
               >
                 {showFavouritesOnly ? "Show All" : "Show Favourites"}

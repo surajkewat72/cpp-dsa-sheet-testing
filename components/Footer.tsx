@@ -97,7 +97,7 @@ export default function Footer() {
               <span className="bg-gradient-to-r from-blue-500 to-cyan-500 w-3 h-3 rounded-full"></span>
               Quick Links
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 list-none p-0 m-0">
               {[
                 { href: "/", label: "Home" },
                 { href: "/sheet", label: "Practice Problems" },
@@ -115,19 +115,17 @@ export default function Footer() {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ x: 4 }}
-                      className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-all duration-300 group text-sm"
+                      whileHover={{ x: 6 }}
+                      className="text-muted-foreground hover:text-blue-500 flex items-center gap-2 transition-all duration-300 text-sm"
                     >
-                      <span className="w-1.5 h-1.5 bg-muted-foreground group-hover:bg-blue-500 rounded-full transition-colors"></span>
                       {label}
                     </motion.a>
                   ) : (
-                    <motion.div whileHover={{ x: 4 }}>
+                    <motion.div whileHover={{ x: 6 }}>
                       <Link
                         href={href}
-                        className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-all duration-300 group text-sm"
+                        className="text-muted-foreground hover:text-blue-500 flex items-center gap-2 transition-all duration-300 text-sm"
                       >
-                        <span className="w-1.5 h-1.5 bg-muted-foreground group-hover:bg-blue-500 rounded-full transition-colors"></span>
                         {label}
                       </Link>
                     </motion.div>
@@ -148,7 +146,7 @@ export default function Footer() {
               <span className="bg-gradient-to-r from-blue-500 to-cyan-500 w-3 h-3 rounded-full"></span>
               Related Links
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 list-none p-0 m-0">
               {[
                 { href: "/privacy-terms", label: "Privacy Policy" },
                 {
@@ -156,10 +154,7 @@ export default function Footer() {
                   external: true,
                   label: "Code of Conduct",
                 },
-                {
-                  href: "/privacy-terms?tab=terms",
-                  label: "Terms of Service",
-                },
+                { href: "/privacy-terms?tab=terms", label: "Terms of Service" },
                 {
                   href: "https://github.com/saumyayadav25/cpp-dsa-sheet-testing/blob/main/LICENSE",
                   external: true,
@@ -177,19 +172,17 @@ export default function Footer() {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ x: 4 }}
-                      className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-all duration-300 group text-sm"
+                      whileHover={{ x: 6 }}
+                      className="text-muted-foreground hover:text-blue-500 flex items-center gap-2 transition-all duration-300 text-sm"
                     >
-                      <span className="w-1.5 h-1.5 bg-muted-foreground group-hover:bg-blue-500 rounded-full transition-colors"></span>
                       {label}
                     </motion.a>
                   ) : (
-                    <motion.div whileHover={{ x: 4 }}>
+                    <motion.div whileHover={{ x: 6 }}>
                       <Link
                         href={href}
-                        className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-all duration-300 group text-sm"
+                        className="text-muted-foreground hover:text-blue-500 flex items-center gap-2 transition-all duration-300 text-sm"
                       >
-                        <span className="w-1.5 h-1.5 bg-muted-foreground group-hover:bg-blue-500 rounded-full transition-colors"></span>
                         {label}
                       </Link>
                     </motion.div>
@@ -368,24 +361,25 @@ export default function Footer() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="relative z-10 border-t border-border mt-12 pt-6 text-center"
         >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-3">
-            <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} DSA Practice. All Rights
-              Reserved.
-            </p>
-            <p className="text-xs text-muted-foreground flex items-center gap-2">
-              Made with <span className="text-red-500 animate-pulse">❤️</span>{" "}
-              by{" "}
-              <motion.a
-                href="https://github.com/saumyayadav25"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-                className="text-blue-500 hover:text-blue-600 font-medium transition-colors"
-              >
-                Saumya Yadav
-              </motion.a>
-            </p>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-3">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-sm text-muted-foreground">
+              <span>
+                &copy; {new Date().getFullYear()} DSA Practice. All Rights Reserved.
+              </span>
+              <span className="hidden md:inline-block mx-2">|</span>
+              <span className="flex items-center gap-2">
+                Made with <span className="text-red-500 animate-pulse">❤️</span> by{" "}
+                <motion.a
+                  href="https://github.com/saumyayadav25"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                  className="text-blue-500 hover:text-blue-600 font-medium transition-colors"
+                >
+                 Saumya Yadav
+                </motion.a>
+              </span>
+            </div>
           </div>
         </motion.div>
       </footer>
