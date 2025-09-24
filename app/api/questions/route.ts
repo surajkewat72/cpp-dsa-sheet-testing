@@ -32,6 +32,8 @@ export async function GET(request: NextRequest) {
                     query.id = parseInt(topicId);
                 }
                 topics = await Topic.find(query).lean() as any;
+                // sort the data on basis of id to ensure consistent order
+                topics.sort((a, b) => a.id - b.id);
                 console.log("Topics found in database:", topics.length);
             } else {
                 console.log("No data in database, using sample data");
