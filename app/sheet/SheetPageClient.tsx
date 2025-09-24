@@ -129,7 +129,8 @@ export default function SheetPageClient() {
           <select
             value={difficultyFilter}
             onChange={(e) => setDifficultyFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
+            className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded px-2 py-2  focus:outline-none transition-colors duration-300 ease-in-out 
+               hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:bg-gray-700 focus:bg-gray-100"
           >
             <option value="">Difficulties</option>
             <option value="easy">Easy</option>
@@ -141,7 +142,8 @@ export default function SheetPageClient() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
+            className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded px-2 py-2 focus:outline-none transition-colors duration-300 ease-in-out 
+               hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:bg-gray-700 focus:bg-gray-100"
           >
             <option value="">Solved Status</option>
             <option value="solved">Solved</option>
@@ -152,7 +154,8 @@ export default function SheetPageClient() {
           <select
             value={revisionFilter}
             onChange={(e) => setRevisionFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
+            className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded px-2 py-2 focus:outline-none transition-colors duration-300 ease-in-out 
+               hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:bg-gray-700 focus:bg-gray-100"
           >
             <option value="">Revision Status</option>
             <option value="marked">Marked for Revision</option>
@@ -163,7 +166,8 @@ export default function SheetPageClient() {
           <select
             value={platformFilter}
             onChange={(e) => setPlatformFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
+            className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded px-2 py-2 focus:outline-none transition-colors duration-300 ease-in-out 
+               hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:bg-gray-700 focus:bg-gray-100"
           >
             <option value="">Platform</option>
             <option value="leetcode">LeetCode</option>
@@ -178,7 +182,8 @@ export default function SheetPageClient() {
           <select
             value={companyFilter}
             onChange={(e) => setCompanyFilter(e.target.value)}
-            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-4 py-2 focus:outline-none transition-colors duration-300"
+            className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded px-2 py-2 focus:outline-none transition-colors duration-300 ease-in-out 
+               hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:bg-gray-700 focus:bg-gray-100"
           >
             <option value="">All Companies</option>
             <option value="Adobe">Adobe</option>
