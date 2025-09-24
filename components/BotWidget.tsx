@@ -72,24 +72,24 @@ export default function BotWidget() {
   };
 
   return (
-  <div ref={chatRef} className="fixed bottom-10 right-6 z-50">
+  <div ref={chatRef} className="fixed bottom-4 right-4 sm:bottom-10 sm:right-6 z-50">
       <button
         onClick={() => setOpen(!open)}
-        className="bg-blue-600 w-16 h-16 rounded-full shadow-lg flex items-center justify-center"
+        className="bg-blue-600 w-12 h-12 sm:w-16 sm:h-16 rounded-full shadow-lg flex items-center justify-center"
       >
         <Image
           src="/assets/bot.gif"
           alt="BOT"
           width={80}
           height={80}
-          className="object-contain"
+          className="object-contain w-8 h-8 sm:w-10 sm:h-10"
           unoptimized
         />
       </button>
 
       {open && (
-        <div className="mt-2 w-96 bg-white rounded-xl shadow-md border max-h-[70vh] flex flex-col">
-          <div className="flex-1 p-4 overflow-y-auto max-h-[50vh] space-y-2">
+        <div className="mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-white rounded-xl shadow-md border max-h-[60vh] sm:max-h-[70vh] flex flex-col absolute bottom-16 right-0 sm:bottom-auto sm:right-auto sm:relative">
+          <div className="flex-1 p-3 sm:p-4 overflow-y-auto max-h-[40vh] sm:max-h-[50vh] space-y-2">
             {messages.map((msg, i) => {
   let contentElement;
 
@@ -134,7 +134,7 @@ export default function BotWidget() {
   return (
     <div
       key={i}
-      className={`p-2 rounded text-black text-sm whitespace-pre-line ${
+      className={`p-2 rounded text-black text-xs sm:text-sm whitespace-pre-line ${
         msg.role === "user"
           ? "bg-blue-100 text-right"
           : "bg-gray-100 text-left"
@@ -147,13 +147,13 @@ export default function BotWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="p-4 border-t">
+          <div className="p-3 sm:p-4 border-t">
             <div className="flex items-center gap-2">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="What have you covered so far?"
-                className="flex-grow border p-2 rounded text-black"
+                className="flex-grow border p-2 rounded text-black text-sm sm:text-base"
                 disabled={loading}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !loading) {
@@ -170,7 +170,7 @@ export default function BotWidget() {
                     : "bg-blue-600 hover:bg-blue-700"
                 }`}
               >
-                <SendHorizonal size={16} />
+                <SendHorizonal size={14} className="sm:w-4 sm:h-4" />
               </button>
             </div>
             {loading && (
