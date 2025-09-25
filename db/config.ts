@@ -7,6 +7,7 @@ export const connect = async () => {
             return;
         }
 
+
         const mongoUri = process.env.MONGO_URI;
         if (!mongoUri) {
             console.log("MongoDB Connection failed - MONGO_URI environment variable is not set");

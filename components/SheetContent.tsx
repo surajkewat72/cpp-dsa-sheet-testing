@@ -105,6 +105,7 @@ export default function SheetContent({
           const contentType = response.headers.get('content-type') || '';
           if (contentType.includes('application/json')) {
             data = await response.json();
+           
           }
         } catch (parseErr) {
           console.warn('Failed to parse JSON from /api/questions response', parseErr);
