@@ -121,7 +121,7 @@ export default function CPTrackerPageClient() {
     }
   };
   
-  // Corrected this hook to use the right data structure
+  // Corrected this hook to use the right data structure.
   const combinedStats = useMemo(() => {
     const initial = { Easy: 0, Medium: 0, Hard: 0, TotalSubmissions: 0 , ActiveDays: 0};
     for (const [platform, stat] of Object.entries(stats)) {
