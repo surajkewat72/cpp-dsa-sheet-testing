@@ -72,11 +72,11 @@ export default function BotWidget() {
   };
 
   return (
-    <div ref={chatRef} className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+    <div ref={chatRef} className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
       {/* Bot Button - Responsive sizing */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 
+        className="w-12 h-12 sm:w-16 sm:h-16 md:w-16 md:h-16 lg:w-16 lg:h-16 
                    bg-blue-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 
                    flex items-center justify-center hover:bg-blue-700 active:scale-95"
       >
@@ -85,7 +85,7 @@ export default function BotWidget() {
           alt="BOT"
           width={80}
           height={80}
-          className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain"
+          className="w-full h-full object-contain p-1"
           unoptimized
         />
       </button>
@@ -93,8 +93,8 @@ export default function BotWidget() {
       {/* Chat Window - Responsive positioning and sizing */}
       {open && (
         <div className="absolute bottom-16 right-0 sm:bottom-20 sm:right-0
-                        w-80 sm:w-96 md:w-[420px] lg:w-[480px]
-                        h-[60vh] sm:h-[70vh] max-h-[500px]
+                        w-72 sm:w-80 md:w-96 lg:w-[400px] xl:w-[420px]
+                        h-[50vh] sm:h-[60vh] md:h-[65vh] max-h-[450px]
                         bg-white rounded-xl shadow-lg border flex flex-col">
           
           {/* Messages Container - Responsive padding and text sizing */}
