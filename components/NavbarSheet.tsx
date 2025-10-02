@@ -138,6 +138,7 @@ export default function NavbarSheet({
   // Dropdown menu structure
   const learningLinks = [
     { href: "/sheet", label: "Sheet", keepSearch: true },
+    { href: "/roadmap", label: "Learning Roadmaps" },
     { href: "/notes", label: "Notes" },
     { href: "/companies", label: "Company-wise Sheet" },
     { href: "/timequiz", label: "Timed Quiz" },

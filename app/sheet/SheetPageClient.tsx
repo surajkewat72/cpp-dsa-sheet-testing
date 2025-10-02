@@ -6,16 +6,19 @@ import { sampleTopics, type Question } from "@/data/questions";
 import POTD from "@/components/POTD";
 import { getPOTD } from "@/utils/getPOTD";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import TestimonialPrompt from "@/components/TestimonialPrompt";
 import ReportIssueButton from "@/components/ReportIssueButton";
 import ProgressSummary from "@/components/ProgressSummary";
 
 export default function SheetPageClient() {
+  const searchParams = useSearchParams();
   const [difficultyFilter, setDifficultyFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [revisionFilter, setRevisionFilter] = useState("");
   const [platformFilter, setPlatformFilter] = useState("");
   const [companyFilter, setCompanyFilter] = useState("");
+  const [roadmapFilter, setRoadmapFilter] = useState("");
 
   const [randomPick, setRandomPick] = useState<{
     topicName: string;
@@ -26,13 +29,18 @@ export default function SheetPageClient() {
   const [potd, setPotd] = useState<Question | null>(null);
 
   useEffect(() => {
-
     const potd = getPOTD();
     setPotd(potd);
 
     const savedStreak = parseInt(localStorage.getItem("potd_streak") || "0");
     setStreak(savedStreak);
-  }, []);
+
+    // Check for roadmap filter in URL params
+    const filterParam = searchParams.get('filter');
+    if (filterParam) {
+      setRoadmapFilter(filterParam);
+    }
+  }, [searchParams]);
 
   const updateStreak = () => {
     const updatedStreak = parseInt(localStorage.getItem("potd_streak") || "0");
@@ -47,6 +55,7 @@ export default function SheetPageClient() {
     setRevisionFilter("");
     setPlatformFilter("");
     setCompanyFilter("");
+    setRoadmapFilter("");
   };
 
   const pickRandomQuestion = () => {
@@ -305,6 +314,7 @@ export default function SheetPageClient() {
           searchTerm={searchTerm}
           platformFilter={platformFilter}
           companyFilter={companyFilter}
+          roadmapFilter={roadmapFilter}
         />
       </main>
 
