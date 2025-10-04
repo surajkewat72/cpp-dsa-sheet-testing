@@ -89,24 +89,46 @@ export const flashcards: Flashcard[] = [
     difficulty: "Intermediate",
     category: "Sorting"
   },
+  {
+    id: 12,
+    term: "Bubble Sort",
+    explanation: "Bubble sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order, pushing larger elements to the end. It's simple but inefficient with O(n²) time complexity.",
+    difficulty: "Intermediate",
+    category: "Sorting"
+  },
+  {
+    id: 13,
+    term: "Selection Sort",
+    explanation: "Selection sort repeatedly finds the smallest element from the unsorted part and swaps it with the first unsorted element, building a sorted list from left to right.",
+    difficulty: "Intermediate",
+    category: "Sorting"
+  },
+   {
+    id: 14,
+    term: "Insetion Sort",
+    explanation: "Insertion Sort builds the sorted list one element at a time by inserting each new element into its correct position among the already sorted ones.",
+    difficulty: "Intermediate",
+    category: "Sorting"
+  },
+  
 
   // Data Structures
   {
-    id: 12,
+    id: 15,
     term: "Hash Table",
     explanation: "Data structure that maps keys to values using hash function. Average O(1) for search, insert, delete. Handles collisions via chaining or open addressing.",
     difficulty: "Basic",
     category: "Data Structures"
   },
   {
-    id: 13,
+    id: 16,
     term: "Binary Search Tree (BST)",
     explanation: "Binary tree where left subtree contains nodes with keys less than parent, right subtree contains greater keys. Average O(log n) operations, worst O(n) if unbalanced.",
     difficulty: "Intermediate",
     category: "Data Structures"
   },
   {
-    id: 14,
+    id: 17,
     term: "Heap",
     explanation: "Complete binary tree satisfying heap property. Max-heap: parent ≥ children, Min-heap: parent ≤ children. Used in priority queues, heap sort. Insert/delete: O(log n).",
     difficulty: "Intermediate",
@@ -115,21 +137,21 @@ export const flashcards: Flashcard[] = [
 
   // Recursion
   {
-    id: 15,
+    id: 18,
     term: "Recursion",
     explanation: "Problem-solving technique where function calls itself with smaller subproblems. Requires base case and recursive case. Can lead to stack overflow if not properly bounded.",
     difficulty: "Basic",
     category: "Recursion"
   },
   {
-    id: 16,
+    id: 19,
     term: "Dynamic Programming",
     explanation: "Optimization technique that solves complex problems by breaking them into simpler subproblems and storing results. Avoids redundant calculations. Two approaches: memoization (top-down) and tabulation (bottom-up).",
     difficulty: "Intermediate",
     category: "Recursion"
   },
   {
-    id: 17,
+    id: 20,
     term: "Backtracking",
     explanation: "Algorithmic approach that considers searching every possible combination to solve computational problems. Builds solution incrementally and abandons candidates that cannot lead to valid solution.",
     difficulty: "Intermediate",
