@@ -154,7 +154,7 @@ export default function NavbarSheet({
   const communityLinks = [
     { href: "https://github.com/saumyayadav25/DSA-Supreme-3.0", label: "Star on GitHub", external: true },
     { href: "/contributors", label: "Contributors" },
-    { href: "#", label: "Give Testimonial", onClick: () => window.dispatchEvent(new CustomEvent('openTestimonialModal')) },
+    { href: "https://docs.google.com/forms/d/e/1FAIpQLSeA-HAYbE6S4sZnH74P9ZnYkk3omgW58h6lXDAUpo9lzvAHPA/viewform", label: "Give Testimonial", external: true },
     { href: "https://forms.gle/bdwBp8oFRWugcrcg9", label: "Provide Feedback", external: true },
     { href: "https://www.buymeacoffee.com/saumyayadav", label: "Support the Project", external: true },
   ];
