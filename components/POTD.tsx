@@ -3,7 +3,7 @@
 /*
  * POTD (Problem of the Day) Component with One-Way Sync to DSA Sheet
  * 
- * ✅ ACCEPTANCE CRITERIA IMPLEMENTED:
+ *  ACCEPTANCE CRITERIA IMPLEMENTED:
  * 
  * 1. Marking POTD as done also checks the corresponding DSA list question.
  *    - When user marks POTD as done, findQuestionInDSASheet() locates the matching question
@@ -116,13 +116,13 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
         }
       }));
 
-      console.log(`✅ Updated DSA sheet progress for ${progressKey} (${questionTitle})`);
+      console.log(` Updated DSA sheet progress for ${progressKey} (${questionTitle})`);
     } catch (error) {
       console.error("❌ Error updating DSA sheet progress:", error);
     }
   };
 
-  // ✅ Check if user is logged in
+  //  Check if user is logged in
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -145,7 +145,7 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
     checkAuth();
   }, []);
 
-  // ✅ Check if today's POTD is already done (independent of DSA sheet progress)
+  //  Check if today's POTD is already done (independent of DSA sheet progress)
   useEffect(() => {
     const currentDate = new Date().toDateString();
     setToday(currentDate);
@@ -162,7 +162,7 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
     });
   }, [potd]);
 
-  // ✅ Mark POTD as done and update backend progress + ONE-WAY sync with DSA sheet
+  //  Mark POTD as done and update backend progress + ONE-WAY sync with DSA sheet
   const handleMarkDone = async () => {
     if (!user) {
       setShowLoginModal(true);
@@ -178,19 +178,19 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
       });
 
       if (res.status === 200) {
-        console.log("✅ Backend progress updated:", res.data);
+        console.log(" Backend progress updated:", res.data);
 
         // Mark POTD as done for today (date-based, not question-based)
         localStorage.setItem("potd_last_done", today);
         setIsSolved(true);
 
-        // ✅ ACCEPTANCE CRITERIA #1: ONE-WAY SYNC to DSA sheet
+        //  ACCEPTANCE CRITERIA #1: ONE-WAY SYNC to DSA sheet
         // When POTD is marked as done, also mark the corresponding DSA list question as done
         if (potd) {
           const dsaQuestionInfo = findQuestionInDSASheet(potd);
           if (dsaQuestionInfo) {
             updateDSASheetProgress(dsaQuestionInfo.progressKey, potd.title);
-            console.log(`✅ Synced POTD completion to DSA sheet: Topic ${dsaQuestionInfo.topicId}, Question ${dsaQuestionInfo.questionId} (${dsaQuestionInfo.topicName})`);
+            console.log(` Synced POTD completion to DSA sheet: Topic ${dsaQuestionInfo.topicId}, Question ${dsaQuestionInfo.questionId} (${dsaQuestionInfo.topicName})`);
           } else {
             console.warn("⚠️ Could not find corresponding DSA sheet question for POTD:", potd.title);
           }
@@ -309,7 +309,7 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
           </Button>
         ) : (
           <div className="text-green-600 dark:text-green-400 font-medium text-sm bg-green-50 dark:bg-green-900/20 px-3 py-2 rounded-md border border-green-200 dark:border-green-900/40 flex items-center gap-2">
-            <span>✅</span>
+            <span></span>
             <span>Today's POTD Completed!</span>
           </div>
         )}

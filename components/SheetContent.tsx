@@ -202,14 +202,14 @@ export default function SheetContent({
   }, []);
 
   // Listen for localStorage changes from other components (like POTD)
-  // ✅ ACCEPTANCE CRITERIA: This enables one-way sync from POTD to DSA sheet
+  //  ACCEPTANCE CRITERIA: This enables one-way sync from POTD to DSA sheet
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "dsa-progress" && e.newValue) {
         try {
           const newProgress = JSON.parse(e.newValue);
           setProgress(newProgress);
-          console.log("✅ Updated progress from storage event (cross-tab):", newProgress);
+          console.log(" Updated progress from storage event (cross-tab):", newProgress);
         } catch (error) {
           console.error("Error parsing updated progress from storage:", error);
         }
@@ -226,7 +226,7 @@ export default function SheetContent({
         try {
           const newProgress = JSON.parse(customEvent.detail.newValue);
           setProgress(newProgress);
-          console.log("✅ Updated progress from POTD sync:", newProgress);
+          console.log(" Updated progress from POTD sync:", newProgress);
         } catch (error) {
           console.error("Error parsing updated progress from custom storage:", error);
         }
@@ -327,9 +327,9 @@ export default function SheetContent({
     }
 
     const currentFieldValue = !!(progress[id]?.[field]);
-    console.log("✅ DSA sheet question toggling:", { id, field, questionDifficulty, topicName });
+    console.log(" DSA sheet question toggling:", { id, field, questionDifficulty, topicName });
 
-    // ✅ ACCEPTANCE CRITERIA #3: Marking DSA questions does NOT affect POTD
+    //  ACCEPTANCE CRITERIA #3: Marking DSA questions does NOT affect POTD
     // This function only updates DSA sheet progress, no POTD interaction
 
     // Fail-safe: recover topicName if missing
