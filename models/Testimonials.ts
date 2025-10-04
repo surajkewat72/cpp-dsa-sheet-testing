@@ -42,7 +42,6 @@ const TestimonialSchema = new mongoose.Schema({
     },
     feedback: {
         type: String,
-        required: true
     },
     canShow: {
         type: Boolean,
