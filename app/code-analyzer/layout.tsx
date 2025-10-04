@@ -6,7 +6,7 @@ export default function CodeAnalyzerLayout({ children }: { children: React.React
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-5">
+      {/* <div className="absolute inset-0 opacity-5">
         <div 
           className="absolute inset-0" 
           // style={{
@@ -14,10 +14,10 @@ export default function CodeAnalyzerLayout({ children }: { children: React.React
           //   backgroundSize: '50px 50px'
           // }}
         ></div>
-      </div>
+      </div> */}
       
       {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 opacity-50"></div>
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 opacity-50"></div> */}
       
       {/* Content */}
       <div className="relative z-10">
