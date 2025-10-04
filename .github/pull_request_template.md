@@ -19,6 +19,8 @@ Briefly explain the problem and how this PR solves it.
 
 ### Checklist
 - [ ] I linked a related issue using `Fixes #<issue_number>`
+- [ ] I am GSSoC'25 contributor
+- [ ] I am Hacktoberfest'25 contributor
 - [ ] I tested locally and verified the changes work as expected
 - [ ] I updated docs or comments where needed
 

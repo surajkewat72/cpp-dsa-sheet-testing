@@ -51,3 +51,7 @@ body:
           required: true
         - label: I am willing to contribute or collaborate on this feature
           required: false
+        - label: I am a GSSoC '25 contributor
+          required: false
+        - label: I am a Hacktoberfest '25 contributor
+          required: false

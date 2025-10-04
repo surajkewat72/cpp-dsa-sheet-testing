@@ -58,3 +58,7 @@ body:
           required: true
         - label: I am willing to submit a PR to fix this
           required: false
+        - label: I am a GSSoC '25 contributor
+          required: false
+        - label: I am a Hacktoberfest '25 contributor
+          required: false
