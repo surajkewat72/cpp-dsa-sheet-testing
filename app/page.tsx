@@ -1175,7 +1175,7 @@ export default function Home() {
                             value="nameAndDesignation"
                             checked={formData.displayPreference === "nameAndDesignation"}
                             onChange={handleInputChange}
-                            className="w-4 h-4 text-blue-600 bg-white dark:bg-gray-800/60 border-gray-300 dark:border-gray-600/50 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-2 backdrop-blur-sm"
+                            className="w-4 h-4 text-blue-600 bg-white rounded-full dark:bg-gray-800/60 border-gray-300 dark:border-gray-600/50 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-2 backdrop-blur-sm"
                           />
                           <label htmlFor="nameAndDesignation" className="ml-2 text-sm text-gray-700 dark:text-gray-200">
                             Use my name and designation
