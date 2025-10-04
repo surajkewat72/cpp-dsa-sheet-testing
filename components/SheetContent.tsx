@@ -117,7 +117,7 @@ export default function SheetContent({
           const contentType = response.headers.get('content-type') || '';
           if (contentType.includes('application/json')) {
             data = await response.json();
-           
+
           }
         } catch (parseErr) {
           console.warn('Failed to parse JSON from /api/questions response', parseErr);
@@ -199,6 +199,46 @@ export default function SheetContent({
     } catch (e) {
       console.error("Failed to parse dsa-progress from localStorage", e);
     }
+  }, []);
+
+  // Listen for localStorage changes from other components (like POTD)
+  // ✅ ACCEPTANCE CRITERIA: This enables one-way sync from POTD to DSA sheet
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "dsa-progress" && e.newValue) {
+        try {
+          const newProgress = JSON.parse(e.newValue);
+          setProgress(newProgress);
+          console.log("✅ Updated progress from storage event (cross-tab):", newProgress);
+        } catch (error) {
+          console.error("Error parsing updated progress from storage:", error);
+        }
+      }
+    };
+
+    // Listen for storage events from other windows/tabs/components
+    window.addEventListener("storage", handleStorageChange);
+
+    // For same-tab changes, we need a custom event (e.g., from POTD component)
+    const handleCustomStorageChange = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (customEvent.detail?.key === "dsa-progress" && customEvent.detail?.newValue) {
+        try {
+          const newProgress = JSON.parse(customEvent.detail.newValue);
+          setProgress(newProgress);
+          console.log("✅ Updated progress from POTD sync:", newProgress);
+        } catch (error) {
+          console.error("Error parsing updated progress from custom storage:", error);
+        }
+      }
+    };
+
+    window.addEventListener("localStorageChange", handleCustomStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("localStorageChange", handleCustomStorageChange);
+    };
   }, []);
 
   // Debug: log key state changes to help trace persistent loading issues
@@ -287,11 +327,14 @@ export default function SheetContent({
     }
 
     const currentFieldValue = !!(progress[id]?.[field]);
-    console.log("Toggling checkbox:", { id, field, questionDifficulty, topicName });
+    console.log("✅ DSA sheet question toggling:", { id, field, questionDifficulty, topicName });
+
+    // ✅ ACCEPTANCE CRITERIA #3: Marking DSA questions does NOT affect POTD
+    // This function only updates DSA sheet progress, no POTD interaction
 
     // Fail-safe: recover topicName if missing
     if (!topicName) {
-      const [topicIdStr,questionId] = id.split("-");
+      const [topicIdStr, questionId] = id.split("-");
       const topicId = parseInt(topicIdStr);
       const topic = topics.find((t: Topic) => t.id === topicId);
       topicName = topic?.name || undefined;
@@ -303,11 +346,11 @@ export default function SheetContent({
       if (field === "isSolved" && !currentFieldValue) {
         updated.solvedAt = new Date().toISOString();
       }
-      console.log("updated",{ ...prev, [id]: updated });
+      console.log("updated", { ...prev, [id]: updated });
       return { ...prev, [id]: updated };
     });
 
-      if (field === "isSolved" || field === "isMarkedForRevision") {
+    if (field === "isSolved" || field === "isMarkedForRevision") {
       try {
         const updatedValue = !currentFieldValue;
         await sendProgressUpdate({
@@ -318,7 +361,7 @@ export default function SheetContent({
           topicName: topicName ?? null,
           // topicCompleted: topicName ?? null,
         });
-    
+
         if (field === "isSolved" && updatedValue) {
           const audio = new Audio("/sounds/done.mp3");
           audio.play().catch((err) => console.log("Audio play blocked or failed", err));
@@ -328,7 +371,7 @@ export default function SheetContent({
       }
     }
 
-    
+
   };
 
   useEffect(() => {
@@ -354,7 +397,7 @@ export default function SheetContent({
       for (const topicId of newCompletions) {
         const topic = topics.find((t: Topic) => t.id === topicId);
         if (!topic) continue;
-        
+
         try {
           // Fire celebration ONLY for brand-new completion (not stored previously)
           // Confetti (dynamic import for CSR only)
@@ -455,7 +498,7 @@ export default function SheetContent({
 
   return (
     <>
-      
+
       {/* Authentication Notice */}
       {(!isLoggedIn || !user) && (
         <div className="mb-8 bg-gradient-to-r from-amber-50/90 to-orange-50/90 dark:from-amber-900/30 dark:to-orange-900/30 backdrop-blur-md border border-amber-200/40 dark:border-amber-700/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300">
@@ -473,8 +516,8 @@ export default function SheetContent({
               </h3>
               <p className="text-amber-700 dark:text-amber-300 text-sm leading-relaxed">
                 To track your progress and mark questions as solved or for revision, please{' '}
-                <a 
-                  href="/sign-in" 
+                <a
+                  href="/sign-in"
                   className="inline-flex items-center font-semibold underline hover:text-amber-900 dark:hover:text-amber-100 transition-colors duration-200"
                 >
                   sign in to your account
@@ -537,7 +580,7 @@ export default function SheetContent({
                     {topic.name}
                   </span>
                 </div>
-                
+
                 <div className="flex items-center space-x-4">
                   <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">
                     <ProgressTracker
@@ -548,9 +591,8 @@ export default function SheetContent({
                     />
                   </div>
                   <svg
-                    className={`h-5 w-5 text-gray-400 group-hover:text-blue-500 transition-all duration-300 ${
-                      openTopics.includes(topic.id) ? "rotate-180" : ""
-                    }`}
+                    className={`h-5 w-5 text-gray-400 group-hover:text-blue-500 transition-all duration-300 ${openTopics.includes(topic.id) ? "rotate-180" : ""
+                      }`}
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -590,10 +632,9 @@ export default function SheetContent({
                             >
                               <td className="py-4 px-4">
                                 <div className="flex items-center space-x-2">
-                                  <div className={`w-1 h-8 rounded-full ${
-                                    isSolved ? 'bg-green-500' : 
+                                  <div className={`w-1 h-8 rounded-full ${isSolved ? 'bg-green-500' :
                                     isMarked ? 'bg-yellow-500' : 'bg-gray-300 dark:bg-gray-600'
-                                  }`}></div>
+                                    }`}></div>
                                   <span className="text-gray-900 dark:text-white font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                                     {q.title}
                                   </span>
@@ -602,9 +643,9 @@ export default function SheetContent({
                               <td className="py-4 px-4">
                                 <div className="flex justify-center gap-2 flex-wrap">
                                   {q.links.leetcode && (
-                                    <a 
-                                      href={q.links.leetcode} 
-                                      target="_blank" 
+                                    <a
+                                      href={q.links.leetcode}
+                                      target="_blank"
                                       rel="noopener noreferrer"
                                       className="p-2 rounded-lg bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/40 transition-all duration-200 hover:scale-110"
                                     >
@@ -612,9 +653,9 @@ export default function SheetContent({
                                     </a>
                                   )}
                                   {q.links.gfg && (
-                                    <a 
-                                      href={q.links.gfg} 
-                                      target="_blank" 
+                                    <a
+                                      href={q.links.gfg}
+                                      target="_blank"
                                       rel="noopener noreferrer"
                                       className="p-2 rounded-lg bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/40 transition-all duration-200 hover:scale-110"
                                     >
@@ -622,9 +663,9 @@ export default function SheetContent({
                                     </a>
                                   )}
                                   {q.links.hackerrank && (
-                                    <a 
-                                      href={q.links.hackerrank} 
-                                      target="_blank" 
+                                    <a
+                                      href={q.links.hackerrank}
+                                      target="_blank"
                                       rel="noopener noreferrer"
                                       className="p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-600/50 transition-all duration-200 hover:scale-110"
                                     >
@@ -632,9 +673,9 @@ export default function SheetContent({
                                     </a>
                                   )}
                                   {q.links.spoj && (
-                                    <a 
-                                      href={q.links.spoj} 
-                                      target="_blank" 
+                                    <a
+                                      href={q.links.spoj}
+                                      target="_blank"
                                       rel="noopener noreferrer"
                                       className="p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-600/50 transition-all duration-200 hover:scale-110"
                                     >
@@ -642,9 +683,9 @@ export default function SheetContent({
                                     </a>
                                   )}
                                   {q.links.ninja && (
-                                    <a 
-                                      href={q.links.ninja} 
-                                      target="_blank" 
+                                    <a
+                                      href={q.links.ninja}
+                                      target="_blank"
                                       rel="noopener noreferrer"
                                       className="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-all duration-200 hover:scale-110"
                                     >
@@ -652,9 +693,9 @@ export default function SheetContent({
                                     </a>
                                   )}
                                   {q.links.code && (
-                                    <a 
-                                      href={q.links.code} 
-                                      target="_blank" 
+                                    <a
+                                      href={q.links.code}
+                                      target="_blank"
                                       rel="noopener noreferrer"
                                       className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-all duration-200 hover:scale-110"
                                     >
@@ -664,13 +705,12 @@ export default function SheetContent({
                                 </div>
                               </td>
                               <td className="py-4 px-4 text-center">
-                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                                  q.difficulty === 'easy' 
-                                    ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-700'
-                                    : q.difficulty === 'medium'
+                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${q.difficulty === 'easy'
+                                  ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-700'
+                                  : q.difficulty === 'medium'
                                     ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-700'
                                     : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-700'
-                                }`}>
+                                  }`}>
                                   {q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1)}
                                 </span>
                               </td>
@@ -686,11 +726,10 @@ export default function SheetContent({
                                       aria-label={`Mark '${q.title}' as solved`}
                                       title={!isLoggedIn || !user ? "Please sign in to mark as solved" : "Mark as solved"}
                                     />
-                                    <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${
-                                      isSolved 
-                                        ? 'bg-green-500 border-green-500 text-white' 
-                                        : 'border-gray-300 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-500'
-                                    } ${!isLoggedIn || !user ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:scale-110'}`}>
+                                    <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${isSolved
+                                      ? 'bg-green-500 border-green-500 text-white'
+                                      : 'border-gray-300 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-500'
+                                      } ${!isLoggedIn || !user ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:scale-110'}`}>
                                       {isSolved && (
                                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -712,11 +751,10 @@ export default function SheetContent({
                                       aria-label={`Mark '${q.title}' for revision`}
                                       title={!isLoggedIn || !user ? "Please sign in to mark for revision" : "Mark for revision"}
                                     />
-                                    <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${
-                                      isMarked 
-                                        ? 'bg-yellow-500 border-yellow-500 text-white' 
-                                        : 'border-gray-300 dark:border-gray-600 hover:border-yellow-400 dark:hover:border-yellow-500'
-                                    } ${!isLoggedIn || !user ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:scale-110'}`}>
+                                    <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${isMarked
+                                      ? 'bg-yellow-500 border-yellow-500 text-white'
+                                      : 'border-gray-300 dark:border-gray-600 hover:border-yellow-400 dark:hover:border-yellow-500'
+                                      } ${!isLoggedIn || !user ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:scale-110'}`}>
                                       {isMarked && (
                                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                           <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -728,9 +766,9 @@ export default function SheetContent({
                               </td>
                               <td className="py-4 px-4 text-center">
                                 {q.solutionLink ? (
-                                  <a 
-                                    href={q.solutionLink} 
-                                    target="_blank" 
+                                  <a
+                                    href={q.solutionLink}
+                                    target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 hover:scale-110"
                                   >
