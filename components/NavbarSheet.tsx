@@ -407,14 +407,14 @@ export default function NavbarSheet({
                     <p className="text-xs text-muted-foreground">{user.email}</p>
                   </div>
                   <Link 
-                    href="/profile" 
+                    href={user?`/profile/${encodeURIComponent(user._id)}`:"#"} 
                     onClick={() => setOpenDropdown(null)}
                     className="block px-4 py-2.5 text-sm text-foreground hover:bg-muted/50 hover:text-blue-400 transition-all"
                   >
                     Profile
                   </Link>
                   <Link 
-                    href="/dashboard" 
+                    href="/progress" 
                     onClick={() => setOpenDropdown(null)}
                     className="block px-4 py-2.5 text-sm text-foreground hover:bg-muted/50 hover:text-blue-400 transition-all"
                   >
@@ -627,10 +627,10 @@ export default function NavbarSheet({
                   <p className="text-xs text-muted-foreground">{user.email}</p>
                 </div>
               </div>
-              <Link href="/profile" className="block px-6 py-2.5 text-foreground hover:bg-muted/50 hover:text-blue-400 transition-all">
+              <Link href={user?`/profile/${encodeURIComponent(user._id)}`:"#"} className="block px-6 py-2.5 text-foreground hover:bg-muted/50 hover:text-blue-400 transition-all">
                 Profile
               </Link>
-              <Link href="/dashboard" className="block px-6 py-2.5 text-foreground hover:bg-muted/50 hover:text-blue-400 transition-all">
+              <Link href="/progress" className="block px-6 py-2.5 text-foreground hover:bg-muted/50 hover:text-blue-400 transition-all">
                 Dashboard
               </Link>
               <button onClick={handleLogout} className="block w-full text-left px-6 py-2.5 text-foreground hover:bg-muted/50 hover:text-red-400 transition-all">
