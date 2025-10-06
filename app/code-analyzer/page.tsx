@@ -57,7 +57,7 @@ function estimateComplexity(code: string, language: string) {
   let time = 'O(1)';
   let space = 'O(1)';
   const loopPatterns = [/for\s*\(/g, /while\s*\(/g, /for\s+\w+\s*:/g];
-  const recursionPattern = /function|def|void|int|double|float|public|private|protected|static|\w+\s*\(.*\)\s*\{[^}]*\breturn\s+\w+\s*\(.*\)/gs;
+  const recursionPattern = /\breturn\s+\w+\s*\(/g;
   let loopCount = 0;
   loopPatterns.forEach((pat) => {
     const matches = code.match(pat);
