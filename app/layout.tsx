@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import FooterWrapper from "@/components/FooterWrapper"; 
+import FooterWrapper from "@/components/FooterWrapper";
 import BotWidget from "@/components/BotWidget";
 import { ThemeProvider } from "@/components/theme-provider";
 import ScrollToTop from "@/components/ScrollToTopBottom";
@@ -16,15 +16,16 @@ const plusJakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// Temporarily commented out due to build issues with Turbopack
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: {
@@ -155,14 +156,14 @@ export default function RootLayout({
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="msapplication-TileColor" content="#0f172a" />
         <meta name="msapplication-tap-highlight" content="no" />
-        
+
         {/* Additional Favicon Links */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
-        
+
         {/* Apple Touch Icons */}
         <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple/apple-touch-icon-57x57.png" />
         <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple/apple-touch-icon-60x60.png" />
@@ -173,17 +174,17 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple/apple-touch-icon-144x144.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple/apple-touch-icon-152x152.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple/apple-touch-icon-180x180.png" />
-        
+
         {/* Microsoft Tiles */}
         <meta name="msapplication-TileImage" content="/icons/microsoft/mstile-144x144.png" />
         <meta name="msapplication-square70x70logo" content="/icons/microsoft/mstile-70x70.png" />
         <meta name="msapplication-square150x150logo" content="/icons/microsoft/mstile-150x150.png" />
         <meta name="msapplication-wide310x150logo" content="/icons/microsoft/mstile-310x150.png" />
         <meta name="msapplication-square310x310logo" content="/icons/microsoft/mstile-310x310.png" />
-        
+
         {/* Safari Pinned Tab */}
         <link rel="mask-icon" href="/favicon.svg" color="#3b82f6" />
-        
+
         {gaId && (
           <>
             <Script
@@ -202,7 +203,7 @@ export default function RootLayout({
         )}
       </head>
       <body className={`${plusJakarta.variable} font-sans`}>
-         <ThemeProvider
+        <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
@@ -210,11 +211,11 @@ export default function RootLayout({
         >
           <QuestionProvider>
             {children}
-            <ScrollToTopBottom/>
+            <ScrollToTopBottom />
           </QuestionProvider>
         </ThemeProvider>
         <BotWidget />
-        <FooterWrapper /> 
+        <FooterWrapper />
       </body>
     </html>
   );
