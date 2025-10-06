@@ -328,8 +328,6 @@ function binarySearch(arr, target) {
                 </button>
               </div>
             </div>
-          </div>
-        )}
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Time Complexity */}
@@ -339,7 +337,7 @@ function binarySearch(arr, target) {
                   <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Time Complexity</h3>
                 </div>
                 <p className="text-2xl font-bold text-purple-600 dark:text-purple-400 font-mono mb-2">
-                  {result.time}
+                  {result?.time}
                 </p>
                 {classified && (
                   <div className="flex items-center gap-2 text-sm">
@@ -356,7 +354,7 @@ function binarySearch(arr, target) {
                   <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Space Complexity</h3>
                 </div>
                 <p className="text-2xl font-bold text-green-600 dark:text-green-400 font-mono">
-                  {result.space}
+                  {result?.space}
                 </p>
               </div>
 
@@ -379,7 +377,7 @@ function binarySearch(arr, target) {
               <div role="tablist" aria-label="Analysis detail tabs" className="flex flex-wrap gap-2 mb-4">
                 {[
                   { id: 'summary', label: 'Summary' },
-                  { id: 'explanation', label: 'Explanation', disabled: !result.explanation },
+                  { id: 'explanation', label: 'Explanation', disabled: !result?.explanation },
                   { id: 'tips', label: 'Tips', disabled: tips.length === 0 },
                   { id: 'raw', label: 'Raw JSON' },
                 ].map(t => (
@@ -422,7 +420,7 @@ function binarySearch(arr, target) {
                     )}
                   </div>
                 )}
-                {activeTab === 'explanation' && result.explanation && (
+                {activeTab === 'explanation' && result?.explanation && (
                   <div id="panel-explanation" role="tabpanel" className="space-y-4">
                     <div className="bg-gray-100/60 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-700/60 rounded-md p-4">
                       <pre className="whitespace-pre-wrap text-sm leading-relaxed text-gray-700 dark:text-gray-300">{result.explanation}</pre>
@@ -443,7 +441,7 @@ function binarySearch(arr, target) {
                 {activeTab === 'raw' && (
                   <div id="panel-raw" role="tabpanel" className="space-y-4">
                     <div className="relative">
-                      <textarea readOnly className="w-full font-mono text-xs rounded-md bg-gray-900/90 text-gray-100 p-4 border border-gray-700 min-h-[200px]" value={JSON.stringify({ time: result.time, space: result.space, classification: classified?.label, desc: classified?.desc, tips, language, mode }, null, 2)} />
+                      <textarea readOnly className="w-full font-mono text-xs rounded-md bg-gray-900/90 text-gray-100 p-4 border border-gray-700 min-h-[200px]" value={JSON.stringify({ time: result?.time, space: result?.space, classification: classified?.label, desc: classified?.desc, tips, language, mode }, null, 2)} />
                     </div>
                   </div>
                 )}
