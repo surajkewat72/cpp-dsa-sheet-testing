@@ -19,6 +19,15 @@ export function ModeToggle() {
 
   const effectiveTheme = theme === "system" ? systemTheme : theme
 
+  const [mounted, setMounted]=React.useState(false);
+React.useEffect(()=>{
+  setMounted(true);
+}, []);
+
+if(!mounted){
+  return null;
+}
+
   return (
     <Button
       variant="outline"

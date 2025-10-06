@@ -85,8 +85,9 @@ const ConceptCard: React.FC<ConceptCardProps> = ({
           <p className="text-sm">{topic?.length} Topics</p>
         </div>
         <div className="flex justify-start space-x-2 mt-4">
-          {topic?.map((tag) => (
-            <Badge variant="default">{tag}</Badge>
+          {topic?.map((tag,idx) => (
+            <Badge key={tag} 
+            variant="default">{tag}</Badge>
           ))}
         </div>
         <button className="flex items-center mt-2 justify-center space-x-2 relative py-2 bg-gradient-to-br from-blue-600/10 to-blue-500/5 rounded-lg text-blue-600 group dark:text-blue-400 border border-blue-600/10 dark:border-blue-600/20">

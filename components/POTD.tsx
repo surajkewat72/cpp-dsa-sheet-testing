@@ -1,7 +1,30 @@
 "use client";
 
+/*
+ * POTD (Problem of the Day) Component with One-Way Sync to DSA Sheet
+ * 
+ *  ACCEPTANCE CRITERIA IMPLEMENTED:
+ * 
+ * 1. Marking POTD as done also checks the corresponding DSA list question.
+ *    - When user marks POTD as done, findQuestionInDSASheet() locates the matching question
+ *    - updateDSASheetProgress() marks it as solved in localStorage
+ *    - Real-time sync via custom events to update SheetContent component
+ * 
+ * 2. Repeated POTD questions appear unchecked in POTD, even if marked in DSA sheet as done.
+ *    - POTD status is date-based (potd_last_done) not question-based
+ *    - Same question can appear on different days and will show as unchecked each time
+ * 
+ * 3. Marking a DSA list question does not affect POTD.
+ *    - No reverse sync implemented - this component only sends, never receives DSA status
+ *    - POTD status is completely independent of DSA sheet progress
+ * 
+ * 4. Changes persist properly and can be tested locally.
+ *    - All progress saved to localStorage with proper event dispatch
+ *    - SheetContent component listens for changes and updates in real-time
+ */
+
 import { useState, useEffect } from "react";
-import { Question } from "@/data/questions";
+import { Question, sampleTopics } from "@/data/questions";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import {
@@ -34,7 +57,72 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
 
-  // ✅ Check if user is logged in
+  // Function to find the topic and question IDs for the POTD question
+  const findQuestionInDSASheet = (potdQuestion: Question) => {
+    for (const topic of sampleTopics) {
+      const foundQuestion = topic.questions.find(
+        (q) => q.id === potdQuestion.id && q.title.trim() === potdQuestion.title.trim()
+      );
+      if (foundQuestion) {
+        return {
+          topicId: topic.id,
+          questionId: foundQuestion.id,
+          progressKey: `${topic.id}-${foundQuestion.id}`,
+          topicName: topic.name
+        };
+      }
+    }
+
+    // Fallback: try to find by title only if ID matching fails
+    for (const topic of sampleTopics) {
+      const foundQuestion = topic.questions.find(
+        (q) => q.title.trim().toLowerCase() === potdQuestion.title.trim().toLowerCase()
+      );
+      if (foundQuestion) {
+        console.log(`Found question by title fallback: ${foundQuestion.title} in topic ${topic.name}`);
+        return {
+          topicId: topic.id,
+          questionId: foundQuestion.id,
+          progressKey: `${topic.id}-${foundQuestion.id}`,
+          topicName: topic.name
+        };
+      }
+    }
+
+    return null;
+  };
+
+  // Function to update DSA sheet progress in localStorage
+  const updateDSASheetProgress = (progressKey: string, questionTitle: string) => {
+    try {
+      const currentProgress = JSON.parse(localStorage.getItem("dsa-progress") || "{}");
+      const updatedProgress = {
+        ...currentProgress,
+        [progressKey]: {
+          ...currentProgress[progressKey],
+          isSolved: true,
+          solvedAt: new Date().toISOString(),
+          // Add source info for debugging
+          solvedVia: 'POTD'
+        }
+      };
+      localStorage.setItem("dsa-progress", JSON.stringify(updatedProgress));
+
+      // Dispatch custom event to notify other components of the localStorage change
+      window.dispatchEvent(new CustomEvent("localStorageChange", {
+        detail: {
+          key: "dsa-progress",
+          newValue: JSON.stringify(updatedProgress)
+        }
+      }));
+
+      console.log(` Updated DSA sheet progress for ${progressKey} (${questionTitle})`);
+    } catch (error) {
+      console.error("❌ Error updating DSA sheet progress:", error);
+    }
+  };
+
+  //  Check if user is logged in
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -57,15 +145,24 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
     checkAuth();
   }, []);
 
-  // ✅ Check if today's POTD is already done
+  //  Check if today's POTD is already done (independent of DSA sheet progress)
   useEffect(() => {
     const currentDate = new Date().toDateString();
     setToday(currentDate);
+
+    // IMPORTANT: POTD status is date-based, NOT question-based
+    // This ensures repeated questions appear unchecked in POTD
     const lastDone = localStorage.getItem("potd_last_done");
     setIsSolved(currentDate === lastDone);
-  }, []);
 
-  // ✅ Mark POTD as done and update backend progress
+    console.log(`📅 POTD status check for ${currentDate}:`, {
+      lastDone,
+      isSolved: currentDate === lastDone,
+      potdTitle: potd?.title
+    });
+  }, [potd]);
+
+  //  Mark POTD as done and update backend progress + ONE-WAY sync with DSA sheet
   const handleMarkDone = async () => {
     if (!user) {
       setShowLoginModal(true);
@@ -73,6 +170,7 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
     }
 
     try {
+      // Update backend progress (existing functionality)
       const res = await axios.post("/api/progress/update", {
         userId: user._id, // Required by backend
         questionDifficulty: potd?.difficulty || "medium", // Use actual difficulty
@@ -80,13 +178,25 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
       });
 
       if (res.status === 200) {
-        console.log("Progress updated:", res.data);
+        console.log(" Backend progress updated:", res.data);
 
-        // Mark locally to avoid multiple submissions in same day
+        // Mark POTD as done for today (date-based, not question-based)
         localStorage.setItem("potd_last_done", today);
         setIsSolved(true);
 
-        // Optionally update streak UI if needed
+        //  ACCEPTANCE CRITERIA #1: ONE-WAY SYNC to DSA sheet
+        // When POTD is marked as done, also mark the corresponding DSA list question as done
+        if (potd) {
+          const dsaQuestionInfo = findQuestionInDSASheet(potd);
+          if (dsaQuestionInfo) {
+            updateDSASheetProgress(dsaQuestionInfo.progressKey, potd.title);
+            console.log(` Synced POTD completion to DSA sheet: Topic ${dsaQuestionInfo.topicId}, Question ${dsaQuestionInfo.questionId} (${dsaQuestionInfo.topicName})`);
+          } else {
+            console.warn("⚠️ Could not find corresponding DSA sheet question for POTD:", potd.title);
+          }
+        }
+
+        // Update streak UI
         updateStreak();
 
         // Play success sound
@@ -117,13 +227,12 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
           <p className="text-sm mt-2 text-muted-foreground capitalize">
             Difficulty:{" "}
             <span
-              className={`font-semibold ${
-                potd.difficulty === "easy"
-                  ? "text-green-600 dark:text-green-400"
-                  : potd.difficulty === "medium"
+              className={`font-semibold ${potd.difficulty === "easy"
+                ? "text-green-600 dark:text-green-400"
+                : potd.difficulty === "medium"
                   ? "text-yellow-600 dark:text-yellow-400"
                   : "text-red-600 dark:text-red-400"
-              }`}
+                }`}
             >
               {potd.difficulty}
             </span>
@@ -135,35 +244,35 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
                 platform === "leetcode"
                   ? "LeetCode"
                   : platform === "gfg"
-                  ? "GeeksForGeeks"
-                  : platform === "hackerrank"
-                  ? "HackerRank"
-                  : platform === "spoj"
-                  ? "SPOJ"
-                  : platform === "ninja"
-                  ? "Coding Ninjas"
-                  : platform === "code"
-                  ? "Other Platform"
-                  : platform === "custom"
-                  ? "View Question"
-                  : platform;
+                    ? "GeeksForGeeks"
+                    : platform === "hackerrank"
+                      ? "HackerRank"
+                      : platform === "spoj"
+                        ? "SPOJ"
+                        : platform === "ninja"
+                          ? "Coding Ninjas"
+                          : platform === "code"
+                            ? "Other Platform"
+                            : platform === "custom"
+                              ? "View Question"
+                              : platform;
 
               const textColor =
                 platform === "leetcode"
                   ? "text-blue-600 dark:text-blue-400"
                   : platform === "gfg"
-                  ? "text-green-600 dark:text-green-400"
-                  : platform === "hackerrank"
-                  ? "text-yellow-600 dark:text-yellow-300"
-                  : platform === "spoj"
-                  ? "text-purple-600 dark:text-purple-400"
-                  : platform === "ninja"
-                  ? "text-pink-600 dark:text-pink-400"
-                  : platform === "code"
-                  ? "text-orange-600 dark:text-orange-400"
-                  : platform === "custom"
-                  ? "text-blue-600 dark:text-blue-300"
-                  : "text-muted-foreground";
+                    ? "text-green-600 dark:text-green-400"
+                    : platform === "hackerrank"
+                      ? "text-yellow-600 dark:text-yellow-300"
+                      : platform === "spoj"
+                        ? "text-purple-600 dark:text-purple-400"
+                        : platform === "ninja"
+                          ? "text-pink-600 dark:text-pink-400"
+                          : platform === "code"
+                            ? "text-orange-600 dark:text-orange-400"
+                            : platform === "custom"
+                              ? "text-blue-600 dark:text-blue-300"
+                              : "text-muted-foreground";
 
               return (
                 <a
@@ -200,7 +309,7 @@ export default function POTD({ potd, updateStreak }: POTDProps) {
           </Button>
         ) : (
           <div className="text-green-600 dark:text-green-400 font-medium text-sm bg-green-50 dark:bg-green-900/20 px-3 py-2 rounded-md border border-green-200 dark:border-green-900/40 flex items-center gap-2">
-            <span>✅</span>
+            <span></span>
             <span>Today's POTD Completed!</span>
           </div>
         )}
