@@ -14,21 +14,21 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
   }
   
-  // // Wait for the rate limiter to process the request
-  // const rateLimitResult = await new Promise((resolve) => {
-  //   apiLimiter(req as any, res as any, (next: any) => {
-  //     resolve(next);
-  //   });
-  // });
+  // Wait for the rate limiter to process the request
+  const rateLimitResult = await new Promise((resolve) => {
+    apiLimiter(req as any, res as any, (next: any) => {
+      resolve(next);
+    });
+  });
 
-  // // If rateLimitResult is not undefined, it means the rate limit was hit
-  // if (rateLimitResult) {
-  //   console.log("rate :", rateLimitResult);
-  //   return NextResponse.json(
-  //     { message: "Too many requests, please try again later." },
-  //     { status: 429 }
-  //   );
-  // }
+  // If rateLimitResult is not undefined, it means the rate limit was hit
+  if (rateLimitResult) {
+    console.log("rate :", rateLimitResult);
+    return NextResponse.json(
+      { message: "Too many requests, please try again later." },
+      { status: 429 }
+    );
+  }
 
   const token = (await cookies()).get("session")?.value;
 
