@@ -15,8 +15,8 @@ interface TopicProgress {
 export async function POST(req: Request) {
   try {
     await connect();
-    const { userId, questionDifficulty, questionId, isSolved, topicName, topicCompleted, } = await req.json();
-
+    const { userId, questionDifficulty, questionId, isSolved, topicName, topicCompleted,isMarkedForRevision } = await req.json();
+    
     if (!userId) {
       return NextResponse.json({ message: "UserId required" }, { status: 400 });
     }
@@ -34,7 +34,13 @@ export async function POST(req: Request) {
     } else progress.streakCount = 1;
     progress.lastVisited = today;
 
- 
+//  markedforrevision
+// if(isMarkedForRevision){
+//   progress.markedForRevision+=1
+// }
+// else{
+//   progress.markedForRevision=Math.max(0,progress.markedForRevision-1)
+// }
 
     // --- Difficulty Counters ---
     if (questionDifficulty) {
@@ -60,20 +66,40 @@ export async function POST(req: Request) {
     if (topicName) {
       const topicIndex = progress.topicsProgress.findIndex((t: TopicProgress) => t.topicName === topicName);
 
-      if (topicIndex > -1) {
-        if (isSolved) {
-          progress.topicsProgress[topicIndex].solvedCount += 1;
-        } else {
-          progress.topicsProgress[topicIndex].solvedCount = Math.max(
-            0,
-            progress.topicsProgress[topicIndex].solvedCount - 1
-          );
-        }
-      } else if (isSolved) {
+      // if (topicIndex > -1) {
+      //   if (isSolved) {
+      //     progress.topicsProgress[topicIndex].solvedCount += 1;
+      //   } else {
+      //     progress.topicsProgress[topicIndex].solvedCount = Math.max(
+      //       0,
+      //       progress.topicsProgress[topicIndex].solvedCount - 1
+      //     );
+      //   }
+      // }
+      if (topicIndex===-1){
         progress.topicsProgress.push({
           topicName, solvedCount: 1, totalQuestions: 5,
-          markedForRevision: 0
+          revisionCount: 0,
         });
+      }
+      const id=progress.topicsProgress.findIndex((t: TopicProgress) => t.topicName === topicName);
+      const topic=progress.topicsProgress[id];
+      if(typeof isSolved==="boolean"){
+        if(isSolved){
+          topic.solvedCount = (topic.solvedCount || 0) + 1;
+        } else {
+          topic.solvedCount = Math.max(0, (topic.solvedCount || 0) - 1);
+        }
+      }
+      if(typeof isMarkedForRevision==="boolean"){
+        const prevTopicRevision = topic.revisionCount || 0;
+        if(isMarkedForRevision){
+          topic.revisionCount = prevTopicRevision + 1;
+          progress.markedForRevision = (progress.markedForRevision || 0) + 1;
+        } else {
+          topic.revisionCount = Math.max(0, prevTopicRevision - 1);
+          progress.markedForRevision = Math.max(0, (progress.markedForRevision || 0) - 1);
+        }
       }
     }
 
@@ -112,3 +138,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Server Error" }, { status: 500 });
   }
 }
+function max(arg0: number, arg1: number): number {
+  throw new Error("Function not implemented.");
+}
+

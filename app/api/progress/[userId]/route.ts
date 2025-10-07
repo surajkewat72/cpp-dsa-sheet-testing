@@ -59,6 +59,7 @@ export async function GET(_req: Request, context: any) {
         topicsProgress: progress.topicsProgress.map((t: { topicName: any; solvedCount: any; totalQuestions: any; }) => ({
           topicName: t.topicName,
           solvedCount: t.solvedCount,
+          revisionCount: t.revisionCount,
           totalQuestions: t.totalQuestions // Make sure this field exists
         })),
         lastVisited: progressDoc.lastVisited
