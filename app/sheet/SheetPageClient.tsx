@@ -36,7 +36,7 @@ export default function SheetPageClient() {
     setStreak(savedStreak);
 
     // Check for roadmap filter in URL params
-    const filterParam = searchParams.get('filter');
+    const filterParam = searchParams?.get('filter') ?? null;
     if (filterParam) {
       setRoadmapFilter(filterParam);
     }

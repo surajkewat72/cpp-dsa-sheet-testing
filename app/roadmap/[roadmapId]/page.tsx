@@ -29,8 +29,8 @@ interface User {
 }
 
 export default function RoadmapDetailPage() {
-  const params = useParams();
-  const roadmapId = params.roadmapId as string;
+  const params = useParams<{ roadmapId: string }>();
+  const roadmapId = params?.roadmapId ?? "";
   
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [userProgress, setUserProgress] = useState<TopicProgress[]>([]);
@@ -305,7 +305,7 @@ export default function RoadmapDetailPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <h4 className="font-medium text-foreground">{level.title}</h4>
-                            <Badge variant="secondary">{level.difficulty}</Badge>
+                            <Badge variant="outline">{level.difficulty}</Badge>
                           </div>
                           <p className="text-sm text-muted-foreground mb-2">{level.description}</p>
                           <div className="flex items-center gap-4 text-xs text-muted-foreground">
@@ -329,7 +329,7 @@ export default function RoadmapDetailPage() {
                       <div>
                         <h3 className="text-xl font-semibold text-foreground">{level.title}</h3>
                         <div className="flex items-center gap-2">
-                          <Badge variant="secondary">{level.difficulty}</Badge>
+                          <Badge variant="outline">{level.difficulty}</Badge>
                           <span className="text-sm text-muted-foreground">
                             {level.topics.length} topics • {level.estimatedWeeks} weeks
                           </span>

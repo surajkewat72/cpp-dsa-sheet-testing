@@ -3,7 +3,7 @@ import { getRoadmapById } from '@/data/roadmaps';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { roadmapId: string } }
+  { params }: any
 ) {
   try {
     const roadmap = getRoadmapById(params.roadmapId);

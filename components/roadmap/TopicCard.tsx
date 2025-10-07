@@ -133,7 +133,7 @@ export default function TopicCard({ topic, status, onStatusChange, timeSpent = 0
             <p className="text-xs font-medium text-foreground">Prerequisites:</p>
             <div className="flex flex-wrap gap-1">
               {topic.prerequisites.map((prereq) => (
-                <Badge key={prereq} variant="secondary" className="text-xs">
+                <Badge key={prereq} variant="outline" className="text-xs">
                   {prereq}
                 </Badge>
               ))}

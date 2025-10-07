@@ -20,7 +20,7 @@ async function getUserIdFromToken(request: NextRequest): Promise<string | null> 
 // GET: Fetch user's progress for a roadmap
 export async function GET(
   request: NextRequest,
-  { params }: { params: { roadmapId: string } }
+  { params }: any
 ) {
   try {
     await connect();
@@ -89,7 +89,7 @@ export async function GET(
 // POST: Update progress for a specific topic
 export async function POST(
   request: NextRequest,
-  { params }: { params: { roadmapId: string } }
+  { params }: any
 ) {
   try {
     await connect();

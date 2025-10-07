@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import SheetPageClient from "./SheetPageClient";
 
 export const metadata: Metadata = {
@@ -40,6 +41,10 @@ export const metadata: Metadata = {
 };
 
 export default function SheetPage() {
-  return <SheetPageClient />;
+  return (
+    <Suspense fallback={null}>
+      <SheetPageClient />
+    </Suspense>
+  );
 }
 

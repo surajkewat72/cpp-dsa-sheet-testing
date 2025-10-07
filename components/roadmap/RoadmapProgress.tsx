@@ -56,7 +56,7 @@ export default function RoadmapProgress({ stats, roadmapTitle, levels }: Roadmap
             <h2 className="text-xl font-semibold text-foreground">
               {roadmapTitle} Progress
             </h2>
-            <Badge variant="secondary" className="text-sm">
+            <Badge variant="outline" className="text-sm">
               {stats.completionPercentage}% Complete
             </Badge>
           </div>
