@@ -57,6 +57,7 @@ const TimeQuiz = () => {
   // Recent attempts and stats
   const [recentAttempts, setRecentAttempts] = useState<any[]>([]);
   const [stats, setStats] = useState<{ avgScore?: number; totalQuizzes?: number } | null>(null);
+  const [showAllAttempts, setShowAllAttempts] = useState(false); // Added for "View More"
 
   // State for feedback
   const [showFeedback, setShowFeedback] = useState(false);
@@ -86,7 +87,8 @@ const TimeQuiz = () => {
 
   // Timer logic for the countdown before the quiz starts
   useEffect(() => {
-    if (showWelcome || quizStarted || isFinished || isLoading) return;
+    // if (showWelcome || quizStarted || isFinished || isLoading) return;
+    if (showWelcome || quizStarted || isFinished || questions.length === 0) return;
     if (countdown === 1) {
       const timer = setTimeout(() => {
         setQuizStarted(true);
@@ -263,7 +265,8 @@ const TimeQuiz = () => {
   const startQuiz = () => {
     if (isLoading || questions.length === 0) return; // Don't start if questions aren't loaded
     setShowWelcome(false);
-    setCountdown(3);
+    setQuizStarted(false);
+  setCountdown(3);
   };
 
   const restart = () => {
@@ -300,11 +303,10 @@ const TimeQuiz = () => {
   return (
     <>
       {(showWelcome || isFinished) && <Navbar />}
-      <main className={`relative bg-white dark:bg-black min-h-screen flex flex-col items-center justify-center text-center px-4 py-8 overflow-hidden`}
+      <main className={`relative bg-white dark:bg-black min-h-screen flex flex-col items-center justify-center text-center px-4 py-8 overflow-auto`}
         style={{ backgroundImage: "url(/bg.png)" }}>
-        <div className="relative z-10 max-w-[1152px] mx-auto w-full flex flex-col justify-center items-center min-h-[calc(100vh-12rem)] text-center">
-          {showWelcome && (
-            <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.2 } } }} className="max-w-[600px] w-full text-center">
+        <div className="relative z-10 max-w-[1152px] mx-auto w-full flex flex-col justify-start items-center min-h-screen text-center pt-16 md:pt-24">          {showWelcome && (
+            <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.2 } } }} className="relative z-10 max-w-[600px] w-full text-center">
               <motion.h1 variants={fadeInUp} custom={0} className="text-3xl md:text-5xl font-bold mb-4 drop-shadow-lg">
                 What's Your <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">DSA</span> Score
               </motion.h1>
@@ -314,12 +316,12 @@ const TimeQuiz = () => {
               <motion.div variants={fadeInUp} custom={2} className="flex justify-center relative mb-8">
                 <img src="quiz.png" alt="Quiz Hero" className="w-[80vw] max-w-sm" draggable="false" />
               </motion.div>
-              <motion.button variants={fadeInUp} custom={3} className="bg-gradient-to-r from-green-500 via-blue-600 to-green-500 text-white font-semibold px-6 py-3 rounded-md shadow-lg w-full sm:w-auto" onClick={startQuiz}>
-                Start Quiz
+              <motion.button variants={fadeInUp} custom={3} className="bg-gradient-to-r from-green-500 via-blue-600 to-green-500 text-white font-semibold px-6 py-3 rounded-md shadow-lg w-full sm:w-auto" onClick={startQuiz}  disabled={isLoading || questions.length === 0}>
+              {isLoading ? "Loading..." : "Start Quiz"}
               </motion.button>
 
               {/* Recent attempts & stats (visible before starting) */}
-              <div className="mt-6 text-left w-full">
+              {/* <div className="mt-6 text-left w-full">
                 {stats && (
                   <div className="flex gap-4 items-center justify-start mb-4">
                     <div className="px-4 py-3 bg-white/5 rounded-md">
@@ -346,8 +348,54 @@ const TimeQuiz = () => {
                     </ul>
                   </div>
                 )}
-              </div>
-            </motion.div>
+              </div> */}
+               {/* Recent Attempts with View More */}
+               {/* Recent attempts & stats (visible before starting) */}
+<div className="mt-6 text-left w-full max-w-[720px]">
+  {/* Stats */}
+  {stats && (
+    <div className="flex gap-4 items-center justify-start mb-4 flex-wrap">
+      <div className="px-4 py-3 bg-white/5 rounded-md shadow-md">
+        <div className="text-xs text-muted-foreground">Avg Score</div>
+        <div className="text-lg font-bold">{Math.round((stats.avgScore || 0) * 100) / 100}%</div>
+      </div>
+      <div className="px-4 py-3 bg-white/5 rounded-md shadow-md">
+        <div className="text-xs text-muted-foreground">Total Quizzes</div>
+        <div className="text-lg font-bold">{stats.totalQuizzes || 0}</div>
+      </div>
+    </div>
+  )}
+
+  {/* Recent Attempts */}
+  {recentAttempts.length > 0 && (
+    <div className="mt-6">
+      <h3 className="text-sm font-semibold mb-2">Recent attempts</h3>
+      <div className="grid grid-cols-1 gap-2">
+        {(showAllAttempts ? recentAttempts : recentAttempts.slice(0, 3)).map(r => (
+          <div
+            key={r._id}
+            className="flex justify-between items-center bg-white/5 p-3 rounded-md shadow-sm hover:bg-white/10 transition-colors"
+          >
+            <div className="text-sm text-muted-foreground">
+              {new Date(r.timestamp || r.createdAt || r.updatedAt).toLocaleString()}
+            </div>
+            <div className="font-semibold text-current">{r.score} / {r.totalQuestions}</div>
+          </div>
+        ))}
+      </div>
+
+      {recentAttempts.length > 3 && (
+        <button
+          onClick={() => setShowAllAttempts(!showAllAttempts)}
+          className="mt-4 ml-2 sm:ml-4 text-sm w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-md shadow-lg hover:scale-105 transform transition-all duration-300"
+        >
+          {showAllAttempts ? "View Less" : "View More"}
+        </button>
+      )}
+      </div>
+      )}
+      </div>
+         </motion.div>
           )}
 
           {!showWelcome && !quizStarted && !isFinished && (

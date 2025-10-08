@@ -11,7 +11,7 @@ export async function GET(_req: Request, context: any) {
         console.log(`[INFO] Fetching recent quiz results for userId: ${userId}`);
         const recent = await quizSchema.find({ userId: userId })
             .sort({ timestamp: -1 })
-            .limit(5);
+            .limit(10);
 
         console.log(`[INFO] Successfully fetched ${recent.length} results for userId: ${userId}`);
         return NextResponse.json(recent, { status: 200 });
