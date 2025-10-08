@@ -55,6 +55,7 @@ type SheetContentProps = {
   searchTerm: string;
   platformFilter: string;
   companyFilter: string;
+  roadmapFilter?: string;
 };
 
 export default function SheetContent({
@@ -64,6 +65,7 @@ export default function SheetContent({
   searchTerm,
   platformFilter,
   companyFilter,
+  roadmapFilter = "",
 }: SheetContentProps) {
   const [openTopics, setOpenTopics] = useState<number[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -458,6 +460,10 @@ export default function SheetContent({
           if (!links.includes(platformFilter)) return false;
         }
         if (companyFilter && (!q.companies || !q.companies.includes(companyFilter))) return false;
+        if (roadmapFilter && roadmapFilter.trim()) {
+          const roadmapQuestionIds = roadmapFilter.split(',').map(id => id.trim());
+          if (!roadmapQuestionIds.includes(q.id.toString())) return false;
+        }
         return true;
       }).length
     );
@@ -551,6 +557,10 @@ export default function SheetContent({
               if (!links.includes(platformFilter)) return false;
             }
             if (companyFilter && (!q.companies || !q.companies.includes(companyFilter))) return false;
+            if (roadmapFilter && roadmapFilter.trim()) {
+              const roadmapQuestionIds = roadmapFilter.split(',').map(id => id.trim());
+              if (!roadmapQuestionIds.includes(q.id.toString())) return false;
+            }
             return true;
           });
 
