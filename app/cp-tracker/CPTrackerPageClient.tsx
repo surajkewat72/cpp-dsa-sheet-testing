@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Import both utility functions
 import { fetchCodeforcesStats } from '../../utils/codeforces';
 import { fetchLeetCodeStats } from '../../utils/leetcode';
+import { fetchHackerEarthStats } from '../../utils/hackerearth';
 
 // Import all chart and dashboard components
 import LeetCodeDashboard from '../../components/LeetCodeDashboard';
@@ -92,11 +93,13 @@ export default function CPTrackerPageClient() {
     setStats(newStats);
 
     try {
-        let newData = null;
+        let newData = null as any;
         if (selectedPlatform === 'codeforces') {
             newData = await fetchCodeforcesStats(handle);
         } else if (selectedPlatform === 'leetcode') {
             newData = await fetchLeetCodeStats(handle);
+        } else if (selectedPlatform === 'hackerearth') {
+            newData = await fetchHackerEarthStats(handle);
         } else {
             toast.info(`Fetching for ${selectedPlatform} requires a backend.`);
             setLoading(false);
@@ -266,6 +269,46 @@ export default function CPTrackerPageClient() {
                     <LeetCodeDashboard data={leetcodeData} username={usernames.leetcode || ''} />
                 </motion.div>
             )}
+        </AnimatePresence>
+
+        {/* --- EXCLUSIVE HACKEREARTH DASHBOARD --- */}
+        <AnimatePresence>
+          {stats.hackerearth && selectedPlatform === 'hackerearth' && (
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+              <h2 className="text-2xl text-center font-bold mb-8 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                HackerEarth Stats for {usernames.hackerearth}
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <StatCard color="blue" label="Points" value={Number(stats.hackerearth?.Points ?? 0)} />
+                <StatCard color="purple" label="Contest Rating" value={Number(stats.hackerearth?.ContestRating ?? 0)} />
+                <StatCard color="green" label="Problems Solved" value={Number(stats.hackerearth?.ProblemsSolved ?? 0)} />
+                <StatCard color="yellow" label="Solutions Submitted" value={Number(stats.hackerearth?.Submissions ?? 0)} />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Algorithms Ranking */}
+                <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-md">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-200">Algorithms Ranking</h3>
+                  <div className="space-y-2 text-gray-300">
+                    <div className="flex justify-between"><span>Rank</span><span>{stats.hackerearth?.rankings?.algorithms?.rank ?? '—'}</span></div>
+                    <div className="flex justify-between"><span>Points</span><span>{stats.hackerearth?.rankings?.algorithms?.points ?? '—'}</span></div>
+                    <div className="flex justify-between"><span>Performance</span><span>{stats.hackerearth?.rankings?.algorithms?.performance ?? '—'}</span></div>
+                  </div>
+                </div>
+
+                {/* Data Structures Ranking */}
+                <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-md">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-200">Data Structures Ranking</h3>
+                  <div className="space-y-2 text-gray-300">
+                    <div className="flex justify-between"><span>Rank</span><span>{stats.hackerearth?.rankings?.dataStructures?.rank ?? '—'}</span></div>
+                    <div className="flex justify-between"><span>Points</span><span>{stats.hackerearth?.rankings?.dataStructures?.points ?? '—'}</span></div>
+                    <div className="flex justify-between"><span>Performance</span><span>{stats.hackerearth?.rankings?.dataStructures?.performance ?? '—'}</span></div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
         </AnimatePresence>
       </div>
     </>
