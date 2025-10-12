@@ -54,9 +54,9 @@ export default function RoadmapPage() {
 
   const fetchRoadmaps = async () => {
     try {
-      const response = await fetch('/api/roadmaps');
+      const response = await fetch("/api/roadmaps");
       const data = await response.json();
-      
+
       if (data.success) {
         setRoadmaps(data.roadmaps);
         // TODO: Fetch user progress for each roadmap if user is authenticated
@@ -66,7 +66,7 @@ export default function RoadmapPage() {
         }
       }
     } catch (error) {
-      console.error('Error fetching roadmaps:', error);
+      console.error("Error fetching roadmaps:", error);
     } finally {
       setLoading(false);
     }
@@ -95,87 +95,164 @@ export default function RoadmapPage() {
   return (
     <>
       <Navbar />
+
       <div className="min-h-screen bg-white dark:bg-background text-gray-900 px-4 md:px-12 py-24 dark:text-white transition-colors duration-300">
-        
+        <div className="w-full">
+          {" "}
+          {/* remove mx-auto or text-center */}
+          <nav className="flex justify-start m-2" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+              <li className="inline-flex items-center">
+                <a
+                  href="/"
+                  className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+                >
+                  <svg
+                    className="w-3 h-3 me-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                  </svg>
+                  Home
+                </a>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <svg
+                    className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 9 4-4-4-4"
+                    />
+                  </svg>
+                  <a
+                    href="#"
+                    className="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white"
+                  >
+                    Learning Tools
+                  </a>
+                </div>
+              </li>
+              <li aria-current="page">
+                <div className="flex items-center">
+                  <svg
+                    className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 9 4-4-4-4"
+                    />
+                  </svg>
+                  <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">
+                    Learning Roadmaps
+                  </span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+        </div>
 
         <div className="max-w-6xl mx-auto px-4 md:px-12  space-y-12">
-        {/* Roadmaps Grid */}
-        <div className="space-y-8">
-          <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold text-foreground">Choose Your Path</h2>
-            <p className="text-muted-foreground">
-              Select a roadmap that matches your goals and current skill level
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {roadmaps.map((roadmap) => (
-              <RoadmapCard
-                key={roadmap.id}
-                roadmap={roadmap}
-                progress={userProgress[roadmap.id]}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Features Section */}
-        <div className="mt-16 space-y-8">
-          <h2 className="text-2xl font-bold text-center text-foreground">
-            Why Follow Our Roadmaps?
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="p-6 text-center">
-              <Target className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Structured Learning</h3>
-              <p className="text-muted-foreground text-sm">
-                Follow a logical progression from basics to advanced concepts
+          {/* Roadmaps Grid */}
+          <div className="space-y-8">
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl font-bold text-foreground">
+                Choose Your Path
+              </h2>
+              <p className="text-muted-foreground">
+                Select a roadmap that matches your goals and current skill level
               </p>
-            </Card>
-
-            <Card className="p-6 text-center">
-              <Book className="h-12 w-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Curated Resources</h3>
-              <p className="text-muted-foreground text-sm">
-                Hand-picked articles, videos, and tutorials for each topic
-              </p>
-            </Card>
-
-            <Card className="p-6 text-center">
-              <Code className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Practice Integration</h3>
-              <p className="text-muted-foreground text-sm">
-                Direct links to relevant practice problems for each topic
-              </p>
-            </Card>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="mt-16 text-center">
-          <Card className="p-8 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800">
-            <h3 className="text-2xl font-bold text-foreground mb-4">
-              Ready to Start Your Journey?
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Choose a roadmap above and begin your structured learning path. 
-              Track your progress, unlock achievements, and master DSA step by step.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/sheet">
-                <Button variant="outline">
-                  Browse Practice Problems
-                </Button>
-              </Link>
-              <Link href="/theory-cheatsheets">
-                <Button variant="outline">
-                  View Theory Guides
-                </Button>
-              </Link>
             </div>
-          </Card>
-        </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {roadmaps.map((roadmap) => (
+                <RoadmapCard
+                  key={roadmap.id}
+                  roadmap={roadmap}
+                  progress={userProgress[roadmap.id]}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Features Section */}
+          <div className="mt-16 space-y-8">
+            <h2 className="text-2xl font-bold text-center text-foreground">
+              Why Follow Our Roadmaps?
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="p-6 text-center">
+                <Target className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2 text-foreground">
+                  Structured Learning
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  Follow a logical progression from basics to advanced concepts
+                </p>
+              </Card>
+
+              <Card className="p-6 text-center">
+                <Book className="h-12 w-12 text-green-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2 text-foreground">
+                  Curated Resources
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  Hand-picked articles, videos, and tutorials for each topic
+                </p>
+              </Card>
+
+              <Card className="p-6 text-center">
+                <Code className="h-12 w-12 text-purple-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2 text-foreground">
+                  Practice Integration
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  Direct links to relevant practice problems for each topic
+                </p>
+              </Card>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="mt-16 text-center">
+            <Card className="p-8 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800">
+              <h3 className="text-2xl font-bold text-foreground mb-4">
+                Ready to Start Your Journey?
+              </h3>
+              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                Choose a roadmap above and begin your structured learning path.
+                Track your progress, unlock achievements, and master DSA step by
+                step.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link href="/sheet">
+                  <Button variant="outline">Browse Practice Problems</Button>
+                </Link>
+                <Link href="/theory-cheatsheets">
+                  <Button variant="outline">View Theory Guides</Button>
+                </Link>
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
     </>
