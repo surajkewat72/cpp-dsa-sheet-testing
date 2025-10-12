@@ -85,7 +85,7 @@ function PrivacyTermsContent() {
                 className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
                   activeTab === 'privacy'
                     ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-foreground dark:hover:text-white'
+                    : 'text-gray-950 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
                 Privacy Policy
@@ -95,7 +95,7 @@ function PrivacyTermsContent() {
                 className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
                   activeTab === 'terms'
                     ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-foreground dark:hover:text-white'
+                    : 'text-gray-950 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
                 Terms of Service
