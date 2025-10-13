@@ -224,7 +224,7 @@ export default function CPTrackerPageClient() {
           <div className="flex justify-center mb-16">
             <button onClick={handleSubmit} disabled={loading} className={`max-w-xs px-6 py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-all duration-300 ${loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'} text-white shadow-lg hover:shadow-xl`}>
               {loading && <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="4" d="M12 2v2m0 16v2m8.4-18.4l-1.4 1.4M5 19l-1.4 1.4m16.8 0l-1.4-1.4M5 5L3.6 3.6 M22 12h-2M4 12H2"/></svg>}
-              {loading ? 'Fetching...' : 'Fetch Stats'}
+              {loading ? 'Fetching... (might take a minute)' : 'Fetch Stats'}
             </button>
           </div>
         </div>
