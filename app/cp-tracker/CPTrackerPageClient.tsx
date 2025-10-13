@@ -485,8 +485,6 @@ const ChallengesTable = ({ challenges }: ChallengesTableProps) => {
   const endIndex = startIndex + itemsPerPage;
   const currentChallenges = challenges.slice(startIndex, endIndex);
 
-  console.log('ChallengesTable render:', { currentPage, startIndex, endIndex, totalChallenges: challenges.length, currentChallengesCount: currentChallenges.length });
-
   return (
     <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-md">
       <h3 className="text-xl font-semibold mb-4 text-gray-200">Challenges</h3>

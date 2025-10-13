@@ -114,7 +114,7 @@ export const fetchHackerEarthStats = async (username: string) => {
 
   const url = `https://www.hackerearth.com/@${encodeURIComponent(username)}`;
 
-  console.log('[HackerEarth] Profile requires JavaScript rendering, using Playwright...');
+  // Uncomment for debugging: console.log('[HackerEarth] Profile requires JavaScript rendering, using Playwright...');
 
   // Use Playwright for dynamic content
   let browser;
@@ -140,7 +140,7 @@ export const fetchHackerEarthStats = async (username: string) => {
         await page.waitForTimeout(2000); // Wait for content to load
       }
     } catch (e) {
-      console.log('[HackerEarth] Could not find/click Performance tab:', e);
+      // Uncomment for debugging: console.log('[HackerEarth] Could not find/click Performance tab:', e);
     }
 
     // Scroll down to ensure Rewards section loads (if it's lazy-loaded)
@@ -150,7 +150,7 @@ export const fetchHackerEarthStats = async (username: string) => {
       });
       await page.waitForTimeout(1500); // Wait for any lazy-loaded content
     } catch (e) {
-      console.log('[HackerEarth] Error scrolling page:', e);
+      // Uncomment for debugging: console.log('[HackerEarth] Error scrolling page:', e);
     }
 
     // Extract challenges with pagination support
@@ -208,7 +208,7 @@ export const fetchHackerEarthStats = async (username: string) => {
           }
         }
 
-        console.log(`[HackerEarth] Page ${pageNum + 1}: Found ${pageChallenges.length} challenges (${allChallenges.length} total)`);
+        // Uncomment for debugging: console.log(`[HackerEarth] Page ${pageNum + 1}: Found ${pageChallenges.length} challenges (${allChallenges.length} total)`);
 
         // Try to click next button
         const nextButton = page.locator('button:has-text("›"), a:has-text("›"), button:has-text("Next"), a:has-text("Next")').last();
@@ -228,9 +228,9 @@ export const fetchHackerEarthStats = async (username: string) => {
         }
       }
 
-      console.log(`[HackerEarth] Total challenges extracted: ${allChallenges.length}`);
+      // Uncomment for debugging: console.log(`[HackerEarth] Total challenges extracted: ${allChallenges.length}`);
     } catch (e) {
-      console.log('[HackerEarth] Error during challenge pagination:', e);
+      // Uncomment for debugging: console.log('[HackerEarth] Error during challenge pagination:', e);
     }
     const parsed = await page.evaluate(() => {
       const parseNum = (s?: string | null) => {
@@ -596,24 +596,23 @@ export const fetchHackerEarthStats = async (username: string) => {
       };
     });
 
-    // Debug logging
-    console.log('[HackerEarth Debug] Playwright Parse Results:', {
-      Points: parsed.Points,
-      ContestRating: parsed.ContestRating,
-      ProblemsSolved: parsed.ProblemsSolved,
-      Submissions: parsed.Submissions
-    });
-
-    console.log('[HackerEarth Debug] Rankings debug info:', parsed._debugRankings);
-    console.log('[HackerEarth Debug] Challenges:', {
-      count: allChallenges.length,
-      samples: allChallenges.slice(0, 5)
-    });
-    console.log('[HackerEarth Debug] Rewards:', {
-      count: parsed.rewards?.length || 0,
-      items: parsed.rewards,
-      debug: (parsed as any)._debugRewards
-    });
+    // Debug logging (uncomment for troubleshooting)
+    // console.log('[HackerEarth Debug] Playwright Parse Results:', {
+    //   Points: parsed.Points,
+    //   ContestRating: parsed.ContestRating,
+    //   ProblemsSolved: parsed.ProblemsSolved,
+    //   Submissions: parsed.Submissions
+    // });
+    // console.log('[HackerEarth Debug] Rankings debug info:', parsed._debugRankings);
+    // console.log('[HackerEarth Debug] Challenges:', {
+    //   count: allChallenges.length,
+    //   samples: allChallenges.slice(0, 5)
+    // });
+    // console.log('[HackerEarth Debug] Rewards:', {
+    //   count: parsed.rewards?.length || 0,
+    //   items: parsed.rewards,
+    //   debug: (parsed as any)._debugRewards
+    // });
 
     return {
       Points: parsed.Points ?? 0,
