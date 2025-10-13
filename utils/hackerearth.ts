@@ -4,6 +4,17 @@ export interface HackerEarthRankTriple {
   performance: string | null;
 }
 
+export interface HackerEarthChallenge {
+  name: string;
+  rank: number | null;
+  ratingChange: string | null;
+}
+
+export interface HackerEarthReward {
+  category: string;
+  level: string;
+}
+
 export interface HackerEarthStats {
   Points: number;
   ContestRating: number | null;
@@ -13,6 +24,8 @@ export interface HackerEarthStats {
     algorithms: HackerEarthRankTriple;
     dataStructures: HackerEarthRankTriple;
   };
+  challenges: HackerEarthChallenge[];
+  rewards: HackerEarthReward[];
 }
 
 export const fetchHackerEarthStats = async (
