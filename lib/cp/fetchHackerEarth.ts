@@ -294,7 +294,7 @@ export const fetchHackerEarthStats = async (username: string) => {
           }
         }
         // 4) Parent small container
-        const container = labelEl.closest('section, article, li, div, span');
+        const container = labelEl.closest('section, article, li, div, span') as HTMLElement | null;
         if (container && container !== document.body) {
           const chunk = (container.innerText || '').replace(/\s+/g, ' ').trim();
           // Prefer after the label index

@@ -366,7 +366,7 @@ export default function CPTrackerPageClient() {
                     Rewards Progress
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                    {stats.hackerearth.rewards.map((reward, index) => {
+                    {stats.hackerearth.rewards.map((reward: { category: string; level: string }, index: number) => {
                       const [completed, total] = reward.level.split('/').map(Number);
                       const remaining = total - completed;
                       const percentage = ((completed / total) * 100).toFixed(0);
