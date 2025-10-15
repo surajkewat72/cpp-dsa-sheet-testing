@@ -7,6 +7,7 @@ export interface HackerEarthRankTriple {
 export interface HackerEarthChallenge {
   name: string;
   rank: number | null;
+  score: number | null;
   ratingChange: string | null;
 }
 

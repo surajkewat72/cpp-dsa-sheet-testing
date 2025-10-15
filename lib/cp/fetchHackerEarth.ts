@@ -7,7 +7,7 @@ import * as cheerio from "cheerio";
 import { chromium } from "playwright";
 
 type RankTriple = { rank: number | null; points: number | null; performance: string | null };
-type Challenge = { name: string; rank: number | null; ratingChange: string | null };
+type Challenge = { name: string; rank: number | null; score: number | null; ratingChange: string | null };
 
 export const fetchHackerEarthStats = async (username: string) => {
   const parseFromText = (docText: string) => {
@@ -114,13 +114,58 @@ export const fetchHackerEarthStats = async (username: string) => {
 
   const url = `https://www.hackerearth.com/@${encodeURIComponent(username)}`;
 
-  // Uncomment for debugging: console.log('[HackerEarth] Profile requires JavaScript rendering, using Playwright...');
-
   // Use Playwright for dynamic content
   let browser;
   try {
-    browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage();
+    browser = await chromium.launch({
+      headless: true,
+      args: [
+        '--disable-blink-features=AutomationControlled',
+        '--disable-dev-shm-usage',
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+      ]
+    });
+
+    const context = await browser.newContext({
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+      viewport: { width: 1920, height: 1080 },
+      extraHTTPHeaders: {
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+      }
+    });
+
+    const page = await context.newPage();
+
+    // Remove webdriver property
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'webdriver', {
+        get: () => undefined,
+      });
+    });
+
+    // Intercept network requests to find API calls for challenges
+    const challengesData: any[] = [];
+    page.on('response', async (response) => {
+      const url = response.url();
+      // Look for the challenge-activity API endpoint specifically
+      if (url.includes('challenge-activity')) {
+        try {
+          const contentType = response.headers()['content-type'];
+          if (contentType && contentType.includes('application/json')) {
+            const json = await response.json();
+            challengesData.push({ url, data: json });
+          }
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+    });
+
     await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
     // Wait longer for client-side widgets to render
     await page.waitForTimeout(3000);
@@ -133,14 +178,14 @@ export const fetchHackerEarthStats = async (username: string) => {
 
     // Look for and click on tabs to load different sections
     try {
-      // Try to find Performance or Challenges tab and click it
-      const performanceTab = page.locator('text=/Performance|Challenges/i').first();
+      // First try to click Performance tab to load challenge data
+      const performanceTab = page.locator('text=/^Performance$/i').first();
       if (await performanceTab.isVisible({ timeout: 2000 }).catch(() => false)) {
         await performanceTab.click();
-        await page.waitForTimeout(2000); // Wait for content to load
+        await page.waitForTimeout(3000); // Wait for content to load
       }
     } catch (e) {
-      // Uncomment for debugging: console.log('[HackerEarth] Could not find/click Performance tab:', e);
+      // Performance tab might not be available
     }
 
     // Scroll down to ensure Rewards section loads (if it's lazy-loaded)
@@ -150,88 +195,11 @@ export const fetchHackerEarthStats = async (username: string) => {
       });
       await page.waitForTimeout(1500); // Wait for any lazy-loaded content
     } catch (e) {
-      // Uncomment for debugging: console.log('[HackerEarth] Error scrolling page:', e);
+      // Ignore scrolling errors
     }
 
-    // Extract challenges with pagination support
-    // We need to extract data AFTER EACH page, not after all pagination
-    const allChallenges: Array<{ name: string; rank: number | null; ratingChange: string | null }> = [];
-    const seenChallenges = new Set<string>();
-
-    try {
-      let hasNextPage = true;
-      let pageNum = 0;
-      const maxPages = 50; // Increased limit to ensure we get all challenges
-
-      while (hasNextPage && pageNum < maxPages) {
-        // Extract challenges from current page
-        const pageChallenges = await page.evaluate(() => {
-          const parseNum = (s?: string | null) => {
-            if (!s) return null;
-            const m = s.replace(/[\s,]/g, "").match(/[-+]?\d+(?:\.\d+)?/);
-            return m ? Number(m[0]) : null;
-          };
-
-          const challenges: Array<{ name: string; rank: number | null; ratingChange: string | null }> = [];
-          const rows = document.querySelectorAll('table tr, [role="table"] [role="row"]');
-
-          for (const row of Array.from(rows)) {
-            const cells = row.querySelectorAll('td, th, [role="cell"]');
-            if (cells.length >= 3) {
-              const nameCell = cells[0]?.textContent?.trim() || '';
-              const rankCell = cells[1]?.textContent?.trim() || '';
-              const ratingChangeCell = cells[2]?.textContent?.trim() || '';
-
-              const skipKeywords = ['name', 'challenge', 'rating change', 'algorithms', 'data structure', 'data structures'];
-              const nameLower = nameCell.toLowerCase();
-
-              if (nameCell &&
-                  !skipKeywords.includes(nameLower) &&
-                  nameCell.length > 3 && // Minimum length for valid challenge name
-                  (!ratingChangeCell || ratingChangeCell.startsWith('+') || ratingChangeCell.startsWith('-') || ratingChangeCell === '—')) {
-                challenges.push({
-                  name: nameCell,
-                  rank: parseNum(rankCell),
-                  ratingChange: ratingChangeCell || null,
-                });
-              }
-            }
-          }
-          return challenges;
-        });
-
-        // Add new challenges to our collection (deduplication)
-        for (const challenge of pageChallenges) {
-          if (!seenChallenges.has(challenge.name)) {
-            seenChallenges.add(challenge.name);
-            allChallenges.push(challenge);
-          }
-        }
-
-        // Uncomment for debugging: console.log(`[HackerEarth] Page ${pageNum + 1}: Found ${pageChallenges.length} challenges (${allChallenges.length} total)`);
-
-        // Try to click next button
-        const nextButton = page.locator('button:has-text("›"), a:has-text("›"), button:has-text("Next"), a:has-text("Next")').last();
-        if (await nextButton.isVisible({ timeout: 1000 }).catch(() => false)) {
-          const isDisabled = await nextButton.getAttribute('disabled').catch(() => null);
-          const ariaDisabled = await nextButton.getAttribute('aria-disabled').catch(() => null);
-
-          if (!isDisabled && ariaDisabled !== 'true') {
-            await nextButton.click();
-            await page.waitForTimeout(2000); // Wait for new data to load
-            pageNum++;
-          } else {
-            hasNextPage = false;
-          }
-        } else {
-          hasNextPage = false;
-        }
-      }
-
-      // Uncomment for debugging: console.log(`[HackerEarth] Total challenges extracted: ${allChallenges.length}`);
-    } catch (e) {
-      // Uncomment for debugging: console.log('[HackerEarth] Error during challenge pagination:', e);
-    }
+    // Challenges are extracted from the challenge-activity API
+    const allChallenges: Array<{ name: string; rank: number | null; score: number | null; ratingChange: string | null }> = [];
     const parsed = await page.evaluate(() => {
       const parseNum = (s?: string | null) => {
         if (!s) return null as number | null;
@@ -596,23 +564,27 @@ export const fetchHackerEarthStats = async (username: string) => {
       };
     });
 
-    // Debug logging (uncomment for troubleshooting)
-    // console.log('[HackerEarth Debug] Playwright Parse Results:', {
-    //   Points: parsed.Points,
-    //   ContestRating: parsed.ContestRating,
-    //   ProblemsSolved: parsed.ProblemsSolved,
-    //   Submissions: parsed.Submissions
-    // });
-    // console.log('[HackerEarth Debug] Rankings debug info:', parsed._debugRankings);
-    // console.log('[HackerEarth Debug] Challenges:', {
-    //   count: allChallenges.length,
-    //   samples: allChallenges.slice(0, 5)
-    // });
-    // console.log('[HackerEarth Debug] Rewards:', {
-    //   count: parsed.rewards?.length || 0,
-    //   items: parsed.rewards,
-    //   debug: (parsed as any)._debugRewards
-    // });
+    // Extract challenges from the intercepted challenge-activity API
+    for (const item of challengesData) {
+      if (item.url.includes('challenge-activity')) {
+        const contestData = item.data?.contest_data?.ratings_graph;
+
+        if (Array.isArray(contestData)) {
+          for (let i = 0; i < contestData.length; i++) {
+            const contest = contestData[i];
+            const prevRating = i > 0 ? contestData[i - 1].rating : null;
+            const ratingChange = prevRating !== null ? contest.rating - prevRating : null;
+
+            allChallenges.push({
+              name: contest.event_title || 'Unknown Contest',
+              rank: contest.rank || null, // Contest rank if available
+              score: contest.rating, // Contest rating/score
+              ratingChange: ratingChange !== null ? (ratingChange > 0 ? `+${ratingChange}` : `${ratingChange}`) : null,
+            });
+          }
+        }
+      }
+    }
 
     return {
       Points: parsed.Points ?? 0,

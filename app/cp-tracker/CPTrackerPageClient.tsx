@@ -109,11 +109,12 @@ export default function CPTrackerPageClient() {
 
         if (newData) {
             // Use a functional update to prevent race conditions with the clear operation
-            setStats(prevStats => ({ ...prevStats, [selectedPlatform]: newData }));
+            const updatedStats = { ...stats, [selectedPlatform]: newData };
+            setStats(updatedStats);
             toast.success(`Successfully fetched stats for ${handle}!`);
             if (userId) {
               localStorage.setItem(`cp-stats-${userId}`, JSON.stringify({
-                stats: { ...stats, [selectedPlatform]: newData },
+                stats: updatedStats,
                 usernames: { ...usernames },
               }));
             }
@@ -467,6 +468,7 @@ interface ChallengesTableProps {
   challenges: Array<{
     name: string;
     rank: number | null;
+    score: number | null;
     ratingChange: string | null;
   }>;
 }
@@ -494,8 +496,9 @@ const ChallengesTable = ({ challenges }: ChallengesTableProps) => {
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-zinc-700">
-              <th className="pb-3 text-gray-400 font-semibold">Name</th>
+              <th className="pb-3 text-gray-400 font-semibold">Contest Name</th>
               <th className="pb-3 text-gray-400 font-semibold text-center">Rank</th>
+              <th className="pb-3 text-gray-400 font-semibold text-center">Score</th>
               <th className="pb-3 text-gray-400 font-semibold text-center">Rating Change</th>
             </tr>
           </thead>
@@ -503,7 +506,8 @@ const ChallengesTable = ({ challenges }: ChallengesTableProps) => {
             {currentChallenges.map((challenge, index) => (
               <tr key={`${challenge.name}-${startIndex + index}`} className="border-b border-zinc-800 hover:bg-zinc-800/30 transition-colors">
                 <td className="py-3 text-gray-300">{challenge.name}</td>
-                <td className="py-3 text-gray-300 text-center">{challenge.rank ?? '—'}</td>
+                <td className="py-3 text-purple-400 font-semibold text-center">{challenge.rank ?? '—'}</td>
+                <td className="py-3 text-blue-400 font-semibold text-center">{challenge.score ?? '—'}</td>
                 <td className="py-3 text-center">
                   <span className={`font-medium inline-flex items-center gap-1 ${
                     challenge.ratingChange && challenge.ratingChange.startsWith('+')
