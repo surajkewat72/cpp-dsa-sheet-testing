@@ -367,56 +367,59 @@ const page = () => {
         </div>
       </section>
 
-      {/* Tabs */}
+     {/* Tabs */}
       <div className="px-4 pt-6 container mx-auto">
-        <div className="flex gap-4 border-b border-border">
+        <div className="flex justify-center md:justify-start gap-4 border-b border-border">
           <button
-            onClick={() => setActiveTab("cheatsheets")}
+            onClick={() => setActiveTab('cheatsheets')}
             className={`px-4 py-2 text-sm font-medium relative ${
-              activeTab === "cheatsheets"
-                ? "text-primary"
-                : "text-muted-foreground"
+              activeTab === 'cheatsheets' ? 'text-primary' : 'text-muted-foreground'
             }`}
           >
             Cheatsheets
-            {activeTab === "cheatsheets" && (
+            {activeTab === 'cheatsheets' && (
               <span className="absolute left-0 -bottom-px h-0.5 w-full bg-primary" />
             )}
           </button>
+
           <button
-            onClick={() => setActiveTab("flashcards")}
+            onClick={() => setActiveTab('flashcards')}
             className={`px-4 py-2 text-sm font-medium relative ${
-              activeTab === "flashcards"
-                ? "text-primary"
-                : "text-muted-foreground"
+              activeTab === 'flashcards' ? 'text-primary' : 'text-muted-foreground'
             }`}
           >
             Flashcards
-            {activeTab === "flashcards" && (
+            {activeTab === 'flashcards' && (
               <span className="absolute left-0 -bottom-px h-0.5 w-full bg-primary" />
             )}
           </button>
         </div>
       </div>
 
-      {activeTab === "cheatsheets" && (
+
+      {activeTab === 'cheatsheets' && (
         <>
-          {/* Filters (Cheatsheets) */}
           <section className="py-8 px-4 border-b bg-secondary/20">
-            <div className="container mx-auto">
-              <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-                <div className="relative flex-1 max-w-md">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search subjects, topics..."
-                    className="pl-10"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
+          <div className="container mx-auto">
+            <div className="flex flex-col md:flex-row gap-4 items-center md:justify-between justify-center text-center md:text-left">
+              
+              {/* Search Box */}
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search subjects, topics..."
+                  className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+
+              {/* Filters */}
+              <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-2">
                 <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                   <Filter className="h-4 w-4 text-muted-foreground" />
-                  <div className="flex flex-wrap gap-2">
+                
                     <Button
                       variant={selectedSubject === null ? "default" : "outline"}
                       size="sm"
@@ -427,9 +430,7 @@ const page = () => {
                     {coreConcept.slice(0, 3).map((sub) => (
                       <Button
                         key={sub.title}
-                        variant={
-                          selectedSubject === sub.title ? "default" : "outline"
-                        }
+                        variant={selectedSubject === sub.title ? "default" : "outline"}
                         size="sm"
                         onClick={() => setSelectedSubject(sub.title)}
                       >
@@ -439,8 +440,11 @@ const page = () => {
                   </div>
                 </div>
               </div>
+
             </div>
-          </section>
+          </div>
+        </section>
+
           {/* Concept Cards */}
           <section className="flex flex-wrap gap-6 items-stretch justify-center px-4 py-8">
             {filteredSubjects.map((sub) => (
@@ -458,7 +462,7 @@ const page = () => {
         </>
       )}
 
-      {activeTab === "flashcards" && (
+      {activeTab === 'flashcards' && (
         <motion.div
           className="max-w-screen mt-6"
           initial={{ opacity: 0, y: 40 }}
@@ -467,27 +471,28 @@ const page = () => {
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           {/* Control Buttons */}
-          <div className="flex gap-3">
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-2 px-2 h-12 py-1 rounded-xl font-medium transition-all ${
-                showFilters
-                  ? "bg-blue-600 text-white shadow-lg"
-                  : "bg-white/70 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-white/10"
-              }`}
-            >
-              <Filter size={18} />
-              Filters
-            </button>
+        <div className="flex flex-row items-center justify-center gap-3">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-2 px-2 h-12 py-1 rounded-xl font-medium transition-all ${
+              showFilters
+                ? 'bg-blue-600 text-white shadow-lg'
+                : 'bg-white/70 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-white/10'
+            }`}
+          >
+            <Filter size={18} />
+            Filters
+          </button>
 
-            <button
-              onClick={resetProgress}
-              className="flex items-center gap-2 px-2 h-12 py-1 bg-white/70 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 rounded-xl font-medium text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-white/10 transition-all"
-            >
-              <RotateCcw size={18} />
-              Reset
-            </button>
-          </div>
+          <button
+            onClick={resetProgress}
+            className="flex items-center gap-2 px-2 h-12 py-1 bg-white/70 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 rounded-xl font-medium text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-white/10 transition-all"
+          >
+            <RotateCcw size={18} />
+            Reset
+          </button>
+        </div>
+
           {/* Stats and Controls */}
           <div className="flex flex-col lg:flex-row gap-6 mb-8 ">
             {/* Progress Stats */}
